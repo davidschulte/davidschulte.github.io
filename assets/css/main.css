@@ -2646,6 +2646,10 @@ input, select, textarea {
 				width: 100%;
 			}
 
+		.image.portrait {
+			width: 10;
+		}
+
 		@media screen and (max-width: 736px) {
 
 			.image.fit {
@@ -2826,7 +2830,42 @@ input, select, textarea {
 				font-size: 1.25rem;
 			}
 
-		ul.icons.alt li .icon:before {
+		ul.icons.brands li .icon:before {
+			-moz-transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+			-webkit-transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+			-ms-transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+			transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+			font-size: 1rem;
+		}
+
+
+	ul.ressources {
+		cursor: default;
+		list-style: none;
+		padding-left: 0;
+	}
+
+		ul.ressources li {
+			display: inline-block;
+			padding: 0 0.5rem 0 0;
+			vertical-align: middle;
+		}
+
+			ul.ressources li:last-child {
+				padding-right: 0;
+			}
+
+			ul.ressources li .icon:before {
+				width: 2.25rem;
+				height: 2.25rem;
+				line-height: 2.25rem;
+				display: inline-block;
+				text-align: center;
+				border-radius: 100%;
+				font-size: 3rem;
+			}
+
+		ul.ressources.brands li .icon:before {
 			-moz-transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 			-webkit-transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 			-ms-transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
@@ -2893,11 +2932,11 @@ input, select, textarea {
 		color: #18bfef;
 	}
 
-	ul.icons.alt li .icon:before {
+	ul.icons.brands li .icon:before {
 		box-shadow: inset 0 0 0 2px #eeeeee;
 	}
 
-	ul.icons.alt li a.icon:hover:before {
+	ul.icons.brands li a.icon:hover:before {
 		box-shadow: inset 0 0 0 2px #18bfef;
 	}
 
@@ -3635,11 +3674,11 @@ input, select, textarea {
 			color: #18bfef;
 		}
 
-		#nav ul.icons.alt li .icon:before {
+		#nav ul.icons.brands li .icon:before {
 			box-shadow: inset 0 0 0 2px #ffffff;
 		}
 
-		#nav ul.icons.alt li a.icon:hover:before {
+		#nav ul.icons.brands li a.icon:hover:before {
 			box-shadow: inset 0 0 0 2px #18bfef;
 		}
 
@@ -4122,11 +4161,11 @@ input, select, textarea {
 			color: #18bfef;
 		}
 
-		#footer ul.icons.alt li .icon:before {
+		#footer ul.icons.brands li .icon:before {
 			box-shadow: inset 0 0 0 2px #e2e2e2;
 		}
 
-		#footer ul.icons.alt li a.icon:hover:before {
+		#footer ul.icons.brands li a.icon:hover:before {
 			box-shadow: inset 0 0 0 2px #18bfef;
 		}
 
@@ -4696,6 +4735,7 @@ input, select, textarea {
 
 	#includednotebook {
 		position: relative;
-		margin-top: 300px !important;
+		margin-top: 10px !important;
+		margin-bottom: 50px !important;
 		border: 1px solid black;
 	}
