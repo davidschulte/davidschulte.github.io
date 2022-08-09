@@ -53,27 +53,27 @@
 								<div class="image main"><img src="images/solarpower.jpg" alt="" /></div>
 								<h2>Motivation</h2>
 
-								<p>Solar energy is one the fundaments of our transition towards green energy. With all its advantages over other power sources, solar energy has one drawback that complicates its use: It only gets generated when it's sunny.
-									To ulitize an efficient mix of energy sources, it is important to forecast their availability in the future.</p>
+								<p>Solar energy is one of the fundaments of our transition toward green energy. With all its advantages over other power sources, solar energy has one drawback that complicates its use: It only gets generated when it's sunny.
+									To utilize an efficient mix of energy sources, it is important to forecast their availability in the future.</p>
 								<h2>Data</h2>
-								<p>The data used is the daily solar power generation in Germany by its four network operators (50Hertz, Amprion, Tennet and Transnet BW). The data is provided by Fraunhofer Institute for Solar Energy Systems ISE and publicly availabe on <a href="https://energy-charts.info/">Energy-Charts</a>.</p>
+								<p>The data used is the daily solar power generation in Germany by its four network operators (50Hertz, Amprion, Tennet and Transnet BW). The data is provided by Fraunhofer Institute for Solar Energy Systems ISE and is publicly available on <a href="https://energy-charts.info/">Energy-Charts</a>.</p>
 								<h2>Approach</h2>
 								<p>To model the process, the following steps were undertaken:</p>
 								<ol>
 									<li>Transformation of the distribution of the data</li>
-									<li>Modelling of the seasonality</li>
-									<li>Modelling of the short-term effects using an ARIMA model</li>
+									<li>Modeling of the seasonality</li>
+									<li>Modeling of the short-term effects using an ARIMA model</li>
 								</ol>
 								<div id="includednotebook"><iframe src="solarforecasting_notebook.html" width="100%" height="10600"></iframe></div>
 								<h2>Learnings and outlook</h2>
-								<p>Even with limited knowledge about the underlying process, it is possible to model seasonality fairly easy. We do not need deep learning but can resort to a statistical time series model. <br />
+								<p>Even with limited knowledge about the underlying process, it is possible to model seasonality fairly easily. We do not need deep learning but can resort to a statistical time series model. <br />
 									The scope of the project was fairly narrow and given more time, the following steps should be performed:
 									<ul>
 										<li>Retransformation of the data to its original distribution</li>
 										<li>Out-of-sample predictions</li>
 										<li>Thorough evaluation of the performance and generality of the model</li>
 									</ul>
-									Additionally, it would be interesting to also forecast power generation in the short-term. To do this, one could incorporate different source, like weather forecasts.
+									Additionally, it would be interesting to also forecast power generation in the short term. To do this, one could incorporate different sources, like weather forecasts.
 								</p>
 
 							</section>
