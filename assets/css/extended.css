@@ -1,0 +1,23 @@
+/* Subtle glow and font refinement */
+:root {
+    --accent: #64ffda; /* Brittany's signature mint, or choose your own */
+}
+
+/* Improve Typography like Simon Willison */
+body {
+    font-family: "Inter", -apple-system, sans-serif;
+    line-height: 1.6;
+}
+
+/* Add a subtle 'developer' look to links */
+.post-content a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+/* Make images look intentional (Elegant frames) */
+img {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}

@@ -1,0 +1,40 @@
+baseURL: https://example.org/
+languageCode: en-us
+title: My New Hugo Site
+theme: PaperMod
+params:
+  # BRITTANY STYLE: Landing page setup
+  profileMode:
+    enabled: true
+    buttons:
+      - name: "PROJECTS"
+        url: "#projects"
+      - name: "BLOG"
+        url: "/posts"
+      - name: "CV"
+        url: "/cv.pdf"
+    title: "Your Name"
+    subtitle: "Full Stack Developer building minimalist web experiences."
+    displayFullContent: false
+    # High-quality square profile image in static/images/
+    imageUrl: "/images/me.png" 
+    imageWidth: 120
+    imageHeight: 120
+    # buttons:
+    #   - name: "Technical Blog"
+    #     url: "posts"
+    #   - name: "Resume (PDF)"
+    #     url: "/cv.pdf" # Points to static/cv.pdf
+
+  # SIMON STYLE: Information density & Navigation
+  mainSections:
+    - posts
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true # Good for internal linking between posts
+  ShowCodeCopyButtons: true # Crucial for a dev blog
+
+  # The "Elegant" UI touches
+  label:
+    text: "Home"
+    icon: "/images/favicon.ico" # Use a minimalist icon

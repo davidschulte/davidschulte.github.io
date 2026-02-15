@@ -1,0 +1,221 @@
+/* 1. THE BRITTANY CHIANG 'MINT' VIBE */
+/* LIGHT MODE (Default) */
+:root {
+    /* A darker, high-contrast teal for readability on white */
+    --theme: #00897b;           
+    --primary: #1d1d1f;         /* Almost black text */
+    --secondary: #424245;       /* Dark grey for summaries */
+    --entry: #ffffff;
+    --link-color: #00766c;
+}
+
+/* DARK MODE (Triggered by the .dark class) */
+.dark {
+    /* Your signature Brittany Chiang Mint */
+    --theme: #64ffda;           
+    --primary: #ccd6f6;         /* Pale blue-grey text */
+    --secondary: #8892b0;       /* Muted grey text */
+    --entry: #112240;           /* Deep navy for post cards */
+    --link-color: #64ffda;
+}
+/* 2. THE TYPOGRAPHY (Inter or System Fonts) */
+body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* /* Target buttons specifically in Profile Mode */ */
+/* .button { */
+/*     background: transparent !important; /* Removes the dark box */ */
+/*     border: 1px solid #64ffda !important; /* Mint border */ */
+/*     color: #64ffda !important; /* Mint text */ */
+/*     box-shadow: none !important; /* Removes any default theme shadows */ */
+/* } */
+/**/
+/* /* The Hover State */ */
+/* .button:hover { */
+/*     background: rgba(100, 255, 218, 0.1) !important; /* Subtle mint tint on hover */ */
+/*     color: #64ffda !important; */
+/*     transform: translateY(-2px); /* Slight lift like Brittany's site */ */
+/* } */
+/**/
+/* /* Ensure the links inside the buttons don't turn blue or purple */ */
+/* .button a { */
+/*     color: inherit !important; */
+/*     text-decoration: none !important; */
+/* } */
+
+/* 4. POST TITLES */
+.post-title {
+    color: var(--theme);
+}
+/* .profile_inner { */
+/*     padding: 40px; */
+/*     background: rgba(255, 255, 255, 0.03); /* Very subtle glass effect */ */
+/*     border-radius: 12px; */
+/*     border: 1px solid rgba(255, 255, 255, 0.1); */
+/* } */
+/* Tighten the spacing between posts in the list */
+.post-entry {
+    margin-bottom: 20px !important;
+    padding: 15px !important;
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Very subtle divider */
+    border-radius: 4px;
+}
+
+/* Make the titles slightly smaller and more professional */
+.entry-header h2 {
+    font-size: 1.4rem !important;
+    line-height: 1.2;
+    margin-bottom: 5px;
+}
+
+/* Simon Willison style: keep the summary text tight */
+.entry-content {
+    font-size: 0.95rem;
+    color: var(--secondary);
+    line-height: 1.5;
+}
+/* /* Only apply the split screen on desktop (screens wider than 1024px) */ */
+/* @media screen and (min-width: 1024px) { */
+/*     .main { */
+/*         display: grid; */
+/*         grid-template-columns: 40% 60%; /* Left side 40%, Right side 60% */ */
+/*         gap: 2rem; */
+/*         align-items: start; */
+/*         max-width: 1200px; */
+/*         margin: 0 auto; */
+/*     } */
+/**/
+/*     /* Make the Profile section (Left) stick to the top as you scroll */ */
+/*     .profile_inner { */
+/*         position: sticky; */
+/*         top: 100px; */
+/*         height: auto; */
+/*         text-align: left !important; /* Brittany Chiang style: left-aligned */ */
+/*         padding-right: 2rem; */
+/*     } */
+/**/
+/*     /* Fix image alignment for left-aligned profile */ */
+/*     .profile_inner img { */
+/*         margin: 0 !important;  */
+/*     } */
+/**/
+/*     /* Right Side: The Blog List */ */
+/*     .list { */
+/*         padding-top: 20px; */
+/*     } */
+/* } */
+
+/* Make post entries feel more like a feed */
+.post-entry {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2) !important;
+    border-radius: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.post-entry:hover {
+    transform: translateX(5px); /* Subtle horizontal nudge on hover */
+    border-bottom-color: var(--theme) !important;
+}
+/* Ensure the notebook doesn't overflow the container */
+.jupyter-notebook-container {
+    width: 100%;
+    overflow-x: auto;
+    background: #fff; /* Notebooks usually look best on white */
+    padding: 20px;
+    border-radius: 8px;
+    color: #1d1d1f; /* Force dark text even in dark mode for readability */
+}
+
+/* Fix Jupyter's code cells to match your theme's font */
+.jupyter-notebook-container code {
+    font-family: var(--code-font) !important;
+}
+.notebook-frame {
+    border: 1px solid var(--secondary);
+    border-radius: 8px;
+    margin: 2rem 0;
+    overflow: hidden;
+    background: rgba(var(--primary), 0.02); /* Subtle contrast */
+}
+
+.notebook-header {
+    background: var(--secondary);
+    color: var(--primary);
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    font-family: monospace;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.notebook-content {
+    padding: 20px;
+}
+
+/* Ensure images inside the notebook don't break the frame */
+.notebook-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.nb-container {
+    margin: 2rem 0;
+    border: 1px solid var(--secondary);
+    border-radius: 8px;
+    background: var(--entry);
+    overflow: hidden;
+}
+
+.nb-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    cursor: pointer;
+    list-style: none;
+    background: rgba(var(--secondary), 0.05);
+}
+
+.nb-summary::-webkit-details-marker { display: none; }
+
+.nb-label {
+    display: flex;
+    align-items: center;
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: var(--theme);
+}
+
+.nb-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nb-time {
+    font-size: 0.7rem;
+    padding: 2px 10px;
+    background: var(--secondary);
+    color: var(--primary);
+    border-radius: 12px;
+    opacity: 0.8;
+}
+
+.nb-toggle-hint {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--theme);
+}
+
+.nb-body {
+    padding: 20px;
+    border-top: 1px solid var(--secondary);
+}

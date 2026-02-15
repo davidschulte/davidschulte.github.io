@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Technical Writing &amp; Projects on My New Hugo Site</title>
+    <link>http://localhost:1313/posts/</link>
+    <description>Recent content in Technical Writing &amp; Projects on My New Hugo Site</description>
+    <generator>Hugo -- 0.155.2</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 08 Feb 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>My Amazing Project</title>
+      <link>http://localhost:1313/posts/proj-alphathesis/</link>
+      <pubDate>Sun, 08 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/proj-alphathesis/</guid>
+      <description>&lt;p&gt;&lt;!-- raw HTML omitted --&gt;Project&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;../index.html&#34;&gt;Portfolio&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;../aboutme.html&#34;&gt;About me&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;GitHub&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;/li&gt;
+&lt;li&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;Linkedin&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;!-- raw HTML omitted --&gt;September 2019&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;h1 id=&#34;reinforcement-learning-for-3-player-chinese-checkers&#34;&gt;Reinforcement Learning for 3-player Chinese Checkers&lt;/h1&gt;
+&lt;p&gt;AlphaZero is impressive. But what happens when we apply its logic to a
+multiplayer game?&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>My Amazing Project</title>
+      <link>http://localhost:1313/posts/proj-solarforecasting/</link>
+      <pubDate>Sun, 08 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/proj-solarforecasting/</guid>
+      <description>&lt;p&gt;&lt;!-- raw HTML omitted --&gt;Project&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;../index.html&#34;&gt;Portfolio&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;../aboutme.html&#34;&gt;About me&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;GitHub&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;/li&gt;
+&lt;li&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;Linkedin&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;!-- raw HTML omitted --&gt;March 2022&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;h1 id=&#34;german-solar-power-forecasting&#34;&gt;German Solar Power Forecasting&lt;/h1&gt;
+&lt;p&gt;How predictable is the daily solar power generation in Germany?&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title></title>
+      <link>http://localhost:1313/posts/proj-cryptomonitoring/cryptomonitoring/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/proj-cryptomonitoring/cryptomonitoring/</guid>
+      <description>&lt;p&gt;&lt;!-- raw HTML omitted --&gt;Project&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;../index.html&#34;&gt;Portfolio&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;../aboutme.html&#34;&gt;About me&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;GitHub&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;/li&gt;
+&lt;li&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;Linkedin&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;!-- raw HTML omitted --&gt;March 2022&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;h1 id=&#34;monitoring-of-the-cryptocurrency-transaction-graph&#34;&gt;Monitoring of the Cryptocurrency Transaction Graph&lt;/h1&gt;
+&lt;p&gt;Everybody is talking about cryptocurrencies. But how are they actually
+circulating?&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title></title>
+      <link>http://localhost:1313/posts/proj-returnpredictions/return_predictions/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/proj-returnpredictions/return_predictions/</guid>
+      <description>&lt;p&gt;Oj&lt;!-- raw HTML omitted --&gt;Project&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;../index.html&#34;&gt;Portfolio&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;../aboutme.html&#34;&gt;About me&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;GitHub&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;/li&gt;
+&lt;li&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;Linkedin&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;!-- raw HTML omitted --&gt;February 2021&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;h1 id=&#34;customer-return-predictions&#34;&gt;Customer return predictions&lt;/h1&gt;
+&lt;p&gt;Given the order of a customer in an online shop, can we predict which
+items will be returned later?&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title></title>
+      <link>http://localhost:1313/posts/proj-returnpredictions/return_predictions_notebook/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/proj-returnpredictions/return_predictions_notebook/</guid>
+      <description>&lt;h1 id=&#34;final-assignment-customer-return-predicitona-hreffinal-assignment-customer-return-prediciton&#34;&gt;Final Assignment: Customer Return Prediciton&amp;lt;a href=&amp;quot;#Final-Assignment:-Customer-Return-Prediciton&amp;quot;&lt;/h1&gt;
+&lt;p&gt;class=&amp;ldquo;anchor-link&amp;rdquo;&amp;gt;¶&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;h3 id=&#34;business-analytics-and-data-science---winter-20202021---prof-dr-stefan-lessmanna&#34;&gt;Business Analytics and Data Science - Winter 2020/2021 - Prof. Dr. Stefan Lessmann&amp;lt;a&lt;/h3&gt;
+&lt;p&gt;href=&amp;quot;#Business-Analytics-and-Data-Science&amp;mdash;Winter-2020/2021&amp;mdash;Prof.-Dr.-Stefan-Lessmann&amp;quot;
+class=&amp;ldquo;anchor-link&amp;rdquo;&amp;gt;¶&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;h3 id=&#34;submission-by-david-schulte&#34;&gt;Submission by David Schulte&lt;!-- raw HTML omitted --&gt;¶&lt;!-- raw HTML omitted --&gt;&lt;/h3&gt;
+&lt;h2 id=&#34;problem-statement-as-given-by-the-instructora-hrefproblem-statement-as-given-by-the-instructor&#34;&gt;Problem statement (as given by the instructor)&amp;lt;a href=&amp;quot;#Problem-statement-(as-given-by-the-instructor)&amp;quot;&lt;/h2&gt;
+&lt;p&gt;class=&amp;ldquo;anchor-link&amp;rdquo;&amp;gt;¶&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;Customers send back a substantial part of the products that they
+purchase online. Return shipping is expensive for online platforms and
+return orders are said to reach 50% for certain industries and products.
+Nevertheless, free or inexpensive return shipping has become a customer
+expectation and de-facto standard in the fierce online competition on
+clothing, but shops have indirect ways to influence customer purchase
+behavior. For purchases where return seems likely, a shop could, for
+example, restrict payment options or display additional marketing
+communication.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
