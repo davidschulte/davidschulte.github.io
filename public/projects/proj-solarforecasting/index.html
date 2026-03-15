@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Solar Forecasting | David Schulte</title>
+<meta name="title" content="Solar Forecasting" />
+<meta name="description" content="Analyzing and forecasting daily solar power generation in Germany using time series models." />
+<meta name="keywords" content="" />
+
+
+<meta property="og:url" content="http://localhost:1313/projects/proj-solarforecasting/">
+  <meta property="og:site_name" content="David Schulte">
+  <meta property="og:title" content="Solar Forecasting">
+  <meta property="og:description" content="Analyzing and forecasting daily solar power generation in Germany using time series models.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2022-03-01T00:00:00+00:00">
+    <meta property="article:modified_time" content="2022-03-01T00:00:00+00:00">
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Solar Forecasting">
+  <meta name="twitter:description" content="Analyzing and forecasting daily solar power generation in Germany using time series models.">
+
+
+
+
+  <meta itemprop="name" content="Solar Forecasting">
+  <meta itemprop="description" content="Analyzing and forecasting daily solar power generation in Germany using time series models.">
+  <meta itemprop="datePublished" content="2022-03-01T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2022-03-01T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1491">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  :root {
+    --width: 720px;
+    --font-main: Verdana, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color: #8b6fcb;
+    --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #01242e;
+      --heading-color: #eee;
+      --text-color: #ddd;
+      --link-color: #8cc2dd;
+      --visited-color: #8b6fcb;
+      --blockquote-color: #ccc;
+    }
+  }
+
+  body {
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    margin: auto;
+    padding: 20px;
+    max-width: var(--width);
+    text-align: left;
+    background-color: var(--background-color);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: var(--text-color);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-main);
+    color: var(--heading-color);
+  }
+
+  a {
+    color: var(--link-color);
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  nav a {
+    margin-right: 8px;
+  }
+
+  strong,
+  b {
+    color: var(--heading-color);
+  }
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  time {
+    font-family: monospace;
+    font-style: normal;
+    font-size: 15px;
+  }
+
+  main {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px dashed;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    font-family: monospace;
+    color: #111111;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: var(--blockquote-color);
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px 0;
+    text-align: center;
+  }
+
+  .title:hover {
+    text-decoration: none;
+  }
+
+  .title h1 {
+    font-size: 1.5em;
+  }
+
+  .inline {
+    width: auto !important;
+  }
+
+  .highlight,
+  .code {
+    border-radius: 3px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    overflow-x: auto;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--visited-color);
+  }
+
+</style>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/bundle.min.css">
+</head>
+
+<body>
+  <header>    <nav class="site-nav">
+        <div class="nav-links">
+            <a href="/">Home</a>
+            
+                <a href="/projects/">Projects</a>
+            
+                <a href="/publications/">Publications</a>
+            
+                <a href="/posts/">Blog</a>
+            
+                <a href="/about/">About</a>
+            
+        </div>
+        <div class="social-links">
+            <a href="https://github.com/davidschulte" aria-label="GitHub">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+            </a>
+            <a href="https://linkedin.com/in/davidsiriusschulte" aria-label="LinkedIn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            </a>
+        </div>
+    </nav>
+</header>
+  <main>
+
+<content>
+  <h1 id="german-solar-power-forecasting">German Solar Power Forecasting</h1>
+<p>Analyzing and forecasting daily solar power generation in Germany using time series models.</p>
+<!-- - <a href="https://github.com/davidschulte/solar-forecasting" -->
+<!--   class="icon brands alt fa-github"><span class="label">GitHub</span>    -->
+<!--   Code</a> -->
+<!-- - <a href="Forecasting%20of%20Solar%20Power%20Generation.pdf" -->
+<!--   class="icon alt fa-file-pdf"><span class="label">Document</span>  Course -->
+<!--   Paper</a> -->
+<h2 id="motivation">Motivation</h2>
+<p>Solar energy is one of the fundaments of our transition toward green
+energy. With all its advantages over other power sources, solar energy
+has one drawback that complicates its use: It only gets generated when
+it&rsquo;s sunny. To utilize an efficient mix of energy sources, it is
+important to forecast their availability in the future.</p>
+<h2 id="data">Data</h2>
+<p>The data used is the daily solar power generation in Germany by its four
+network operators (50Hertz, Amprion, Tennet and Transnet BW). The data
+is provided by Fraunhofer Institute for Solar Energy Systems ISE and is
+publicly available on <a href="https://energy-charts.info/">Energy-Charts</a>.</p>
+<h2 id="approach">Approach</h2>
+<p>To model the process, the following steps were undertaken:</p>
+<ol>
+<li>Transformation of the distribution of the data</li>
+<li>Modeling of the seasonality</li>
+<li>Modeling of the short-term effects using an ARIMA model</li>
+</ol>
+
+
+
+
+
+<details class="nb-container" open>
+    <summary class="nb-summary">
+        <div class="nb-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+        <polyline points="10 9 9 9 8 9"></polyline>
+      </svg>
+            <span>Notebook Analysis</span>
+        </div>
+        <div class="nb-meta">
+            <span class="nb-time">15 min read</span>
+            <span class="nb-toggle-hint">Click to collapse</span>
+        </div>
+    </summary>
+    <div class="nb-body">
+        <div class="nb-content">
+            <h1 id="modelling-power-load-of-solar-energy">Modelling Power Load of Solar Energy</h1>
+<h2 id="david-schulte">David Schulte</h2>
+<h2 id="course-work-statistical-tools-in-finance-and-insurance">Course work: Statistical Tools in Finance and Insurance</h2>
+<h2 id="prof-dr-lópez-cabrera">Prof. Dr. López Cabrera</h2>
+<h2 id="imports-and-helper-functions">Imports and helper functions</h2>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">oss</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">pandas</span> <span style="color:#31748f">as</span> <span style="color:#ebbcba">pd</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">from</span> <span style="color:#ebbcba">matplotlib</span> <span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">pyplot</span> <span style="color:#31748f">as</span> <span style="color:#ebbcba">plt</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">numpy</span> <span style="color:#31748f">as</span> <span style="color:#ebbcba">np</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">from</span> <span style="color:#ebbcba">statsmodels.graphics.tsaplots</span> <span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">plot_acf</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">plot_pacf</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">statsmodels.api</span> <span style="color:#31748f">as</span> <span style="color:#ebbcba">sm</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">from</span> <span style="color:#ebbcba">statsmodels.tsa.arima.model</span> <span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">ARIMA</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">from</span> <span style="color:#ebbcba">statsmodels.tsa.stattools</span> <span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">acf</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">pacf</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">from</span> <span style="color:#ebbcba">statsmodels.api</span> <span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">OLS</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">add_constant</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">from</span> <span style="color:#ebbcba">sklearn.linear_model</span> <span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">LinearRegression</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">from</span> <span style="color:#ebbcba">sklearn.preprocessing</span> <span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">MinMaxScaler</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">from</span> <span style="color:#ebbcba">sklearn.neighbors</span> <span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">KernelDensity</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">seaborn</span> <span style="color:#31748f">as</span> <span style="color:#ebbcba">sns</span>
+</span></span></code></pre></div><h2 id="loading-the-data">Loading the data</h2>
+<p><strong>First we load the data from all four network operators from 2010 until 2020.<br>
+The data can be accessed on <a href="https://energy-charts.info/">https://energy-charts.info/</a>.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">header_list</span> <span style="color:#908caa">=</span> <span style="color:#908caa">[</span><span style="color:#f6c177">&#39;Date&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;50Hertz&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;Amprion&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;Tennet&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;Transnet BW&#39;</span><span style="color:#908caa">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#31748f">for</span> <span style="color:#ebbcba">year</span> <span style="color:#908caa">in</span> <span style="color:#ebbcba">range</span><span style="color:#908caa">(</span><span style="color:#f6c177">2010</span><span style="color:#908caa">,</span> <span style="color:#f6c177">2021</span><span style="color:#908caa">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">filename</span> <span style="color:#908caa">=</span> <span style="color:#f6c177">f</span><span style="color:#f6c177">&#34;energy-charts_Electricity_production_in_Germany_in_</span><span style="color:#f6c177">{</span><span style="color:#ebbcba">year</span><span style="color:#f6c177">}</span><span style="color:#f6c177">.csv&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">filepath</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">os</span><span style="color:#908caa">.</span><span style="color:#ebbcba">path</span><span style="color:#908caa">.</span><span style="color:#ebbcba">join</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;data&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">filename</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">df_current</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">pd</span><span style="color:#908caa">.</span><span style="color:#ebbcba">read_csv</span><span style="color:#908caa">(</span><span style="color:#ebbcba">filepath</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">sep</span><span style="color:#908caa">=</span><span style="color:#f6c177">&#39;,&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">names</span><span style="color:#908caa">=</span><span style="color:#ebbcba">header_list</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">skiprows</span><span style="color:#908caa">=</span><span style="color:#f6c177">1</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">df_current</span><span style="color:#908caa">.</span><span style="color:#ebbcba">fillna</span><span style="color:#908caa">(</span><span style="color:#f6c177">0</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">inplace</span><span style="color:#908caa">=</span><span style="color:#31748f">True</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6e6a86">#     df_current[&#34;all&#34;] = df_current[&#34;50Hertz&#34;] + df_current[&#34;Amprion&#34;] + df_current[&#34;Tennet&#34;] + df_current[&#34;Transnet BW&#34;]</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    <span style="color:#31748f">if</span> <span style="color:#ebbcba">year</span> <span style="color:#908caa">==</span> <span style="color:#f6c177">2010</span><span style="color:#908caa">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ebbcba">df</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">df_current</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#31748f">else</span><span style="color:#908caa">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ebbcba">df</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">pd</span><span style="color:#908caa">.</span><span style="color:#ebbcba">concat</span><span style="color:#908caa">([</span><span style="color:#ebbcba">df</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">df_current</span><span style="color:#908caa">])</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">df</span><span style="color:#908caa">.</span><span style="color:#ebbcba">head</span><span style="color:#908caa">()</span>
+</span></span></code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>50Hertz</th>
+      <th>Amprion</th>
+      <th>Tennet</th>
+      <th>Transnet BW</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2009-12-31T23:00:00.000Z</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2010-01-01T00:00:00.000Z</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2010-01-01T01:00:00.000Z</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2010-01-01T02:00:00.000Z</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2010-01-01T03:00:00.000Z</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p><strong>We sum up the energy generation by the network operators to get the total energy generation. Since the data contains values for different time intervals, we aggregate them to get daily power generation.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#34;all&#34;</span><span style="color:#908caa">]</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#34;50Hertz&#34;</span><span style="color:#908caa">]</span> <span style="color:#908caa">+</span> <span style="color:#ebbcba">df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#34;Amprion&#34;</span><span style="color:#908caa">]</span> <span style="color:#908caa">+</span> <span style="color:#ebbcba">df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#34;Tennet&#34;</span><span style="color:#908caa">]</span> <span style="color:#908caa">+</span> <span style="color:#ebbcba">df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#34;Transnet BW&#34;</span><span style="color:#908caa">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;Date&#39;</span><span style="color:#908caa">]</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">pd</span><span style="color:#908caa">.</span><span style="color:#ebbcba">to_datetime</span><span style="color:#908caa">(</span><span style="color:#ebbcba">df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;Date&#39;</span><span style="color:#908caa">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">daily_df</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">df</span><span style="color:#908caa">.</span><span style="color:#ebbcba">groupby</span><span style="color:#908caa">([</span><span style="color:#ebbcba">df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;Date&#39;</span><span style="color:#908caa">]</span><span style="color:#908caa">.</span><span style="color:#ebbcba">dt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">date</span><span style="color:#908caa">])</span><span style="color:#908caa">.</span><span style="color:#ebbcba">mean</span><span style="color:#908caa">()[</span><span style="color:#f6c177">1</span><span style="color:#908caa">:]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">.</span><span style="color:#ebbcba">head</span><span style="color:#908caa">()</span>
+</span></span></code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>50Hertz</th>
+      <th>Amprion</th>
+      <th>Tennet</th>
+      <th>Transnet BW</th>
+      <th>all</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2010-01-01</th>
+      <td>0.004458</td>
+      <td>0.0</td>
+      <td>0.048333</td>
+      <td>0.023208</td>
+      <td>0.076000</td>
+    </tr>
+    <tr>
+      <th>2010-01-02</th>
+      <td>0.004333</td>
+      <td>0.0</td>
+      <td>0.043250</td>
+      <td>0.020833</td>
+      <td>0.068417</td>
+    </tr>
+    <tr>
+      <th>2010-01-03</th>
+      <td>0.002167</td>
+      <td>0.0</td>
+      <td>0.031625</td>
+      <td>0.015167</td>
+      <td>0.048958</td>
+    </tr>
+    <tr>
+      <th>2010-01-04</th>
+      <td>0.001417</td>
+      <td>0.0</td>
+      <td>0.088750</td>
+      <td>0.042667</td>
+      <td>0.132833</td>
+    </tr>
+    <tr>
+      <th>2010-01-05</th>
+      <td>0.002250</td>
+      <td>0.0</td>
+      <td>0.042250</td>
+      <td>0.020333</td>
+      <td>0.064833</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p><strong>This is how our data looks like.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">figure</span><span style="color:#908caa">(</span><span style="color:#ebbcba">figsize</span><span style="color:#908caa">=</span><span style="color:#908caa">(</span><span style="color:#f6c177">30</span><span style="color:#908caa">,</span><span style="color:#f6c177">10</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;all&#39;</span><span style="color:#908caa">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">xlabel</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Year&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">30</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">ylabel</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Daily Solar Power Generation in GW&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">30</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">title</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Daily Solar Power Generation in Germany&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">40</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">savefig</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;data.png&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><p><img src="stf_project_files/stf_project_10_0.png" alt="png"></p>
+<h2 id="distribution-of-the-data">Distribution of the data</h2>
+<p><strong>Let us take a look at the distribution of daily power generation.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">sns</span><span style="color:#908caa">.</span><span style="color:#ebbcba">displot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;all&#39;</span><span style="color:#908caa">],</span> <span style="color:#ebbcba">kde</span><span style="color:#908caa">=</span><span style="color:#31748f">True</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">xlabel</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;U&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">savefig</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;datadistr.png&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><p><img src="stf_project_files/stf_project_13_0.png" alt="png"></p>
+<p><strong>We can see that the distribution is skewed to the left. Since we will later apply a linear regression, we would prefer data that is approximately normally distributed. To shift our distribution, we apply the following transformation.</strong></p>
+<p><strong>First, we apply Min-Max scaling.</strong></p>
+<p>$\tilde{U_t}=\frac{U_t-U_{min}}{U_{max}-U_{min}}$</p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">scaler</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">MinMaxScaler</span><span style="color:#908caa">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">scaled</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">scaler</span><span style="color:#908caa">.</span><span style="color:#ebbcba">fit_transform</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;all&#39;</span><span style="color:#908caa">]</span><span style="color:#908caa">.</span><span style="color:#ebbcba">to_numpy</span><span style="color:#908caa">()</span><span style="color:#908caa">.</span><span style="color:#ebbcba">reshape</span><span style="color:#908caa">(</span><span style="color:#908caa">-</span><span style="color:#f6c177">1</span><span style="color:#908caa">,</span> <span style="color:#f6c177">1</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">epsilon</span> <span style="color:#908caa">=</span> <span style="color:#f6c177">0.1</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">scaled</span><span style="color:#908caa">[</span><span style="color:#ebbcba">scaled</span><span style="color:#908caa">==</span><span style="color:#f6c177">0</span><span style="color:#908caa">]</span><span style="color:#908caa">=</span><span style="color:#ebbcba">epsilon</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">scaled</span><span style="color:#908caa">[</span><span style="color:#ebbcba">scaled</span><span style="color:#908caa">==</span><span style="color:#f6c177">1</span><span style="color:#908caa">]</span><span style="color:#908caa">=</span><span style="color:#f6c177">1</span><span style="color:#908caa">-</span><span style="color:#ebbcba">epsilon</span>
+</span></span></code></pre></div><p><strong>Then, we apply a logit normal transformation to the scaled values.</strong></p>
+<p>$U^*=\log{\left(\frac{\tilde{U}_t}{1-\tilde{U}_t}\right)}$</p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">transformed</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">log</span><span style="color:#908caa">(</span><span style="color:#ebbcba">scaled</span><span style="color:#908caa">/</span><span style="color:#908caa">(</span><span style="color:#f6c177">1</span><span style="color:#908caa">-</span><span style="color:#ebbcba">scaled</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;transformed&#39;</span><span style="color:#908caa">]</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">transformed</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">sns</span><span style="color:#908caa">.</span><span style="color:#ebbcba">displot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">transformed</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">kde</span><span style="color:#908caa">=</span><span style="color:#31748f">True</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">legend</span><span style="color:#908caa">=</span><span style="color:#31748f">None</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">xlabel</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;$U^*$&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">savefig</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;transformeddistr.png&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><p><img src="stf_project_files/stf_project_20_0.png" alt="png"></p>
+<p><strong>Let us take a look at our transformed time series.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;transformed&#39;</span><span style="color:#908caa">])</span>
+</span></span></code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x22e1b2926d0&gt;]
+</code></pre>
+<p><img src="stf_project_files/stf_project_22_1.png" alt="png"></p>
+<h2 id="seasonality">Seasonality</h2>
+<p><strong>We can see a strong seasonal component in the data. To get rid of it, we apply a linear regression and continue working with its residuals.<br>
+After thinking about the underlying process behind the data and experimenting with it, we model our data as following:</strong></p>
+<p>$U^*_t = \beta_0 + \beta_1 \cdot t + \beta_2 \cdot \sqrt[4]t \cos \left(2\pi \frac{t-11}{365}\right)+X_t$</p>
+<ul>
+<li>$\beta_0$ <strong>is the intercept.</strong></li>
+<li>$\beta_1$ <strong>is a linear time coefficient. The behind it is that the amount of solar panels increases steadily over time.</strong></li>
+<li>$\beta_2$ <strong>models seasonality. The cosine term describes the yearly seasonality, as power generation heavily depends on natural seasons. The wave is shifted by 11 days. That is because winter solstice is exactly 11 days before New Year. Furthermore, we scale seasonal component by the fourth square-root of time, as a non-linear development of solar energy plants comes into play.</strong></li>
+</ul>
+<p><strong>We will use the scikit-learn library for implementation. To get more more information about the regression, we will also conduct it using the statsmodels library and print the model summary.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#31748f">def</span> <span style="color:#ebbcba">get_seasonal_component</span><span style="color:#908caa">(</span><span style="color:#ebbcba">timeseries</span><span style="color:#908caa">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">time</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">arange</span><span style="color:#908caa">(</span><span style="color:#ebbcba">len</span><span style="color:#908caa">(</span><span style="color:#ebbcba">timeseries</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">x_vals</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">array</span><span style="color:#908caa">((</span><span style="color:#ebbcba">time</span><span style="color:#908caa">,</span> <span style="color:#908caa">(</span><span style="color:#ebbcba">time</span><span style="color:#908caa">**</span><span style="color:#f6c177">0.25</span><span style="color:#908caa">*</span><span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">cos</span><span style="color:#908caa">(</span><span style="color:#f6c177">2</span><span style="color:#908caa">*</span><span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">pi</span><span style="color:#908caa">*</span><span style="color:#908caa">(</span><span style="color:#ebbcba">time</span><span style="color:#908caa">+</span><span style="color:#f6c177">11</span><span style="color:#908caa">)</span><span style="color:#908caa">/</span><span style="color:#f6c177">365</span><span style="color:#908caa">))))</span><span style="color:#908caa">.</span><span style="color:#ebbcba">T</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">lm</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">LinearRegression</span><span style="color:#908caa">()</span><span style="color:#908caa">.</span><span style="color:#ebbcba">fit</span><span style="color:#908caa">(</span><span style="color:#ebbcba">x_vals</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">timeseries</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">print</span><span style="color:#908caa">(</span><span style="color:#f6c177">f</span><span style="color:#f6c177">&#39;Intercept: </span><span style="color:#f6c177">{</span><span style="color:#ebbcba">lm</span><span style="color:#908caa">.</span><span style="color:#ebbcba">intercept_</span><span style="color:#f6c177">}</span><span style="color:#f6c177">&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">print</span><span style="color:#908caa">(</span><span style="color:#f6c177">f</span><span style="color:#f6c177">&#39;Coefficients: </span><span style="color:#f6c177">{</span><span style="color:#ebbcba">lm</span><span style="color:#908caa">.</span><span style="color:#ebbcba">coef_</span><span style="color:#f6c177">}</span><span style="color:#f6c177">&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">print</span><span style="color:#908caa">(</span><span style="color:#f6c177">f</span><span style="color:#f6c177">&#39;R-squared: </span><span style="color:#f6c177">{</span><span style="color:#ebbcba">lm</span><span style="color:#908caa">.</span><span style="color:#ebbcba">score</span><span style="color:#908caa">(</span><span style="color:#ebbcba">x_vals</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">timeseries</span><span style="color:#908caa">)</span><span style="color:#f6c177">}</span><span style="color:#f6c177">&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#31748f">return</span> <span style="color:#ebbcba">lm</span><span style="color:#908caa">.</span><span style="color:#ebbcba">predict</span><span style="color:#908caa">(</span><span style="color:#ebbcba">x_vals</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">time</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">arange</span><span style="color:#908caa">(</span><span style="color:#ebbcba">len</span><span style="color:#908caa">(</span><span style="color:#ebbcba">transformed</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">x_vals</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">array</span><span style="color:#908caa">((</span><span style="color:#ebbcba">time</span><span style="color:#908caa">,</span> <span style="color:#908caa">(</span><span style="color:#ebbcba">time</span><span style="color:#908caa">**</span><span style="color:#f6c177">0.25</span><span style="color:#908caa">*</span><span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">cos</span><span style="color:#908caa">(</span><span style="color:#f6c177">2</span><span style="color:#908caa">*</span><span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">pi</span><span style="color:#908caa">*</span><span style="color:#908caa">(</span><span style="color:#ebbcba">time</span><span style="color:#908caa">+</span><span style="color:#f6c177">11</span><span style="color:#908caa">)</span><span style="color:#908caa">/</span><span style="color:#f6c177">365</span><span style="color:#908caa">))))</span><span style="color:#908caa">.</span><span style="color:#ebbcba">T</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">model</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">sm</span><span style="color:#908caa">.</span><span style="color:#ebbcba">OLS</span><span style="color:#908caa">(</span><span style="color:#ebbcba">transformed</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">sm</span><span style="color:#908caa">.</span><span style="color:#ebbcba">add_constant</span><span style="color:#908caa">(</span><span style="color:#ebbcba">x_vals</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">results</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">model</span><span style="color:#908caa">.</span><span style="color:#ebbcba">fit</span><span style="color:#908caa">()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">results</span><span style="color:#908caa">.</span><span style="color:#ebbcba">summary</span><span style="color:#908caa">()</span>
+</span></span></code></pre></div><table class="simpletable">
+<caption>OLS Regression Results</caption>
+<tr>
+  <th>Dep. Variable:</th>            <td>y</td>        <th>  R-squared:         </th> <td>   0.724</td>
+</tr>
+<tr>
+  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared:    </th> <td>   0.724</td>
+</tr>
+<tr>
+  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   5272.</td>
+</tr>
+<tr>
+  <th>Date:</th>             <td>Sun, 07 Aug 2022</td> <th>  Prob (F-statistic):</th>  <td>  0.00</td> 
+</tr>
+<tr>
+  <th>Time:</th>                 <td>12:57:19</td>     <th>  Log-Likelihood:    </th> <td> -4394.5</td>
+</tr>
+<tr>
+  <th>No. Observations:</th>      <td>  4018</td>      <th>  AIC:               </th> <td>   8795.</td>
+</tr>
+<tr>
+  <th>Df Residuals:</th>          <td>  4015</td>      <th>  BIC:               </th> <td>   8814.</td>
+</tr>
+<tr>
+  <th>Df Model:</th>              <td>     2</td>      <th>                     </th>     <td> </td>   
+</tr>
+<tr>
+  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>     <td> </td>   
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+    <td></td>       <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>  
+</tr>
+<tr>
+  <th>const</th> <td>   -2.0841</td> <td>    0.023</td> <td>  -91.413</td> <td> 0.000</td> <td>   -2.129</td> <td>   -2.039</td>
+</tr>
+<tr>
+  <th>x1</th>    <td>    0.0005</td> <td> 9.83e-06</td> <td>   46.923</td> <td> 0.000</td> <td>    0.000</td> <td>    0.000</td>
+</tr>
+<tr>
+  <th>x2</th>    <td>   -0.2282</td> <td>    0.002</td> <td>  -92.181</td> <td> 0.000</td> <td>   -0.233</td> <td>   -0.223</td>
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+  <th>Omnibus:</th>       <td>507.081</td> <th>  Durbin-Watson:     </th> <td>   0.620</td> 
+</tr>
+<tr>
+  <th>Prob(Omnibus):</th> <td> 0.000</td>  <th>  Jarque-Bera (JB):  </th> <td>1086.897</td> 
+</tr>
+<tr>
+  <th>Skew:</th>          <td>-0.766</td>  <th>  Prob(JB):          </th> <td>9.62e-237</td>
+</tr>
+<tr>
+  <th>Kurtosis:</th>      <td> 5.036</td>  <th>  Cond. No.          </th> <td>4.64e+03</td> 
+</tr>
+</table><br/><br/>Notes:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.<br/>[2] The condition number is large, 4.64e+03. This might indicate that there are<br/>strong multicollinearity or other numerical problems.
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">f</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">open</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;ols.tex&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;w&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">f</span><span style="color:#908caa">.</span><span style="color:#ebbcba">write</span><span style="color:#908caa">(</span><span style="color:#ebbcba">results</span><span style="color:#908caa">.</span><span style="color:#ebbcba">summary</span><span style="color:#908caa">(</span><span style="color:#ebbcba">xname</span><span style="color:#908caa">=</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;beta0&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;beta1&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;beta2&#39;</span><span style="color:#908caa">])</span><span style="color:#908caa">.</span><span style="color:#ebbcba">as_latex</span><span style="color:#908caa">())</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">f</span><span style="color:#908caa">.</span><span style="color:#ebbcba">close</span><span style="color:#908caa">()</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;seasonality&#39;</span><span style="color:#908caa">]</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">get_seasonal_component</span><span style="color:#908caa">(</span><span style="color:#ebbcba">transformed</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;cleaned&#39;</span><span style="color:#908caa">]</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;transformed&#39;</span><span style="color:#908caa">]</span> <span style="color:#908caa">-</span> <span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;seasonality&#39;</span><span style="color:#908caa">]</span>
+</span></span></code></pre></div><pre><code>Intercept: [-2.08409933]
+Coefficients: [[ 0.00046127 -0.22820751]]
+R-squared: 0.7242120048393265
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">figure</span><span style="color:#908caa">(</span><span style="color:#ebbcba">figsize</span><span style="color:#908caa">=</span><span style="color:#908caa">(</span><span style="color:#f6c177">15</span><span style="color:#908caa">,</span><span style="color:#f6c177">5</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;transformed&#39;</span><span style="color:#908caa">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;seasonality&#39;</span><span style="color:#908caa">],</span> <span style="color:#ebbcba">c</span><span style="color:#908caa">=</span><span style="color:#f6c177">&#39;r&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">linewidth</span><span style="color:#908caa">=</span><span style="color:#f6c177">3</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">legend</span><span style="color:#908caa">([</span><span style="color:#f6c177">&#39;Observed data&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;Regression fit&#39;</span><span style="color:#908caa">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">xlabel</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Date&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">12</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">savefig</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;seasonality.png&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><p><img src="stf_project_files/stf_project_30_0.png" alt="png"></p>
+<h3 id="residuals-after-regression">Residuals after regression</h3>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;cleaned&#39;</span><span style="color:#908caa">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">title</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Residual $X_t$&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">15</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">xlabel</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Date&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">12</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">savefig</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;afterlm.png&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><p><img src="stf_project_files/stf_project_32_0.png" alt="png"></p>
+<p><strong>The residuals look good, except in the very beginning. That is no problem, since we can just drop the first year of our data and work with the remaining 10 years.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">daily_df</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">365</span><span style="color:#908caa">:]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">.</span><span style="color:#ebbcba">head</span><span style="color:#908caa">()</span>
+</span></span></code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>50Hertz</th>
+      <th>Amprion</th>
+      <th>Tennet</th>
+      <th>Transnet BW</th>
+      <th>all</th>
+      <th>transformed</th>
+      <th>seasonality</th>
+      <th>cleaned</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2011-01-01</th>
+      <td>0.011042</td>
+      <td>0.022042</td>
+      <td>0.058250</td>
+      <td>0.009917</td>
+      <td>0.101250</td>
+      <td>-4.775061</td>
+      <td>-2.895385</td>
+      <td>-1.879675</td>
+    </tr>
+    <tr>
+      <th>2011-01-02</th>
+      <td>0.024542</td>
+      <td>0.072958</td>
+      <td>0.090208</td>
+      <td>0.035667</td>
+      <td>0.223375</td>
+      <td>-3.973572</td>
+      <td>-2.892215</td>
+      <td>-1.081357</td>
+    </tr>
+    <tr>
+      <th>2011-01-03</th>
+      <td>0.022583</td>
+      <td>0.080875</td>
+      <td>0.066042</td>
+      <td>0.078875</td>
+      <td>0.248375</td>
+      <td>-3.865377</td>
+      <td>-2.888749</td>
+      <td>-0.976628</td>
+    </tr>
+    <tr>
+      <th>2011-01-04</th>
+      <td>0.019125</td>
+      <td>0.089500</td>
+      <td>0.067167</td>
+      <td>0.067958</td>
+      <td>0.243750</td>
+      <td>-3.884564</td>
+      <td>-2.884988</td>
+      <td>-0.999576</td>
+    </tr>
+    <tr>
+      <th>2011-01-05</th>
+      <td>0.051042</td>
+      <td>0.191000</td>
+      <td>0.205750</td>
+      <td>0.106500</td>
+      <td>0.554292</td>
+      <td>-3.036477</td>
+      <td>-2.880932</td>
+      <td>-0.155545</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p><strong>We will print the RMSE of our residuals.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">rmse</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">linalg</span><span style="color:#908caa">.</span><span style="color:#ebbcba">norm</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;cleaned&#39;</span><span style="color:#908caa">])</span><span style="color:#908caa">/</span><span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">sqrt</span><span style="color:#908caa">(</span><span style="color:#ebbcba">len</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">print</span><span style="color:#908caa">(</span><span style="color:#f6c177">f</span><span style="color:#f6c177">&#39;RMSE of residuals: </span><span style="color:#f6c177">{</span><span style="color:#ebbcba">rmse</span><span style="color:#908caa">.</span><span style="color:#ebbcba">round</span><span style="color:#908caa">(</span><span style="color:#f6c177">4</span><span style="color:#908caa">)</span><span style="color:#f6c177">}</span><span style="color:#f6c177">&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><pre><code>RMSE of residuals: 0.6584
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">sns</span><span style="color:#908caa">.</span><span style="color:#ebbcba">displot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;cleaned&#39;</span><span style="color:#908caa">],</span> <span style="color:#ebbcba">kde</span><span style="color:#908caa">=</span><span style="color:#31748f">True</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x22e1b7145b0&gt;
+</code></pre>
+<p><img src="stf_project_files/stf_project_37_1.png" alt="png"></p>
+<p><strong>We can see that our residuals are approximately normally distributed.</strong></p>
+<h2 id="time-series-modelling">Time series modelling</h2>
+<p><strong>Now it is time to work on the time series. First, we inspect its partial autocorrelation.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">fig</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">plot_pacf</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;cleaned&#39;</span><span style="color:#908caa">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">xlabel</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Lags&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">12</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">title</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Partial Autocorrelation&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">15</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">savefig</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;pacf.png&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><p><img src="stf_project_files/stf_project_41_0.png" alt="png"></p>
+<p><strong>Based on this result, we apply a ARIMA(1,0,1) model.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">model</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">ARIMA</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;cleaned&#39;</span><span style="color:#908caa">],</span> <span style="color:#ebbcba">order</span><span style="color:#908caa">=</span><span style="color:#908caa">(</span><span style="color:#f6c177">1</span><span style="color:#908caa">,</span><span style="color:#f6c177">0</span><span style="color:#908caa">,</span><span style="color:#f6c177">1</span><span style="color:#908caa">))</span><span style="color:#908caa">.</span><span style="color:#ebbcba">fit</span><span style="color:#908caa">()</span>
+</span></span></code></pre></div><pre><code>C:\ProgramData\Anaconda3\lib\site-packages\statsmodels\tsa\base\tsa_model.py:524: ValueWarning: No frequency information was provided, so inferred frequency D will be used.
+  warnings.warn('No frequency information was'
+C:\ProgramData\Anaconda3\lib\site-packages\statsmodels\tsa\base\tsa_model.py:524: ValueWarning: No frequency information was provided, so inferred frequency D will be used.
+  warnings.warn('No frequency information was'
+C:\ProgramData\Anaconda3\lib\site-packages\statsmodels\tsa\base\tsa_model.py:524: ValueWarning: No frequency information was provided, so inferred frequency D will be used.
+  warnings.warn('No frequency information was'
+</code></pre>
+<p><strong>Again, we give out the residuals after applying the ARIMA model.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">rmse</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">linalg</span><span style="color:#908caa">.</span><span style="color:#ebbcba">norm</span><span style="color:#908caa">(</span><span style="color:#ebbcba">model</span><span style="color:#908caa">.</span><span style="color:#ebbcba">resid</span><span style="color:#908caa">)</span><span style="color:#908caa">/</span><span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">sqrt</span><span style="color:#908caa">(</span><span style="color:#ebbcba">len</span><span style="color:#908caa">(</span><span style="color:#ebbcba">model</span><span style="color:#908caa">.</span><span style="color:#ebbcba">resid</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">print</span><span style="color:#908caa">(</span><span style="color:#f6c177">f</span><span style="color:#f6c177">&#39;RMSE of residuals after ARIMA: </span><span style="color:#f6c177">{</span><span style="color:#ebbcba">rmse</span><span style="color:#908caa">.</span><span style="color:#ebbcba">round</span><span style="color:#908caa">(</span><span style="color:#f6c177">4</span><span style="color:#908caa">)</span><span style="color:#f6c177">}</span><span style="color:#f6c177">&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><pre><code>RMSE of residuals after ARIMA: 0.5124
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">model</span><span style="color:#908caa">.</span><span style="color:#ebbcba">summary</span><span style="color:#908caa">()</span>
+</span></span></code></pre></div><table class="simpletable">
+<caption>SARIMAX Results</caption>
+<tr>
+  <th>Dep. Variable:</th>        <td>cleaned</td>     <th>  No. Observations:  </th>   <td>3653</td>   
+</tr>
+<tr>
+  <th>Model:</th>            <td>ARIMA(1, 0, 1)</td>  <th>  Log Likelihood     </th> <td>-2738.148</td>
+</tr>
+<tr>
+  <th>Date:</th>            <td>Sun, 07 Aug 2022</td> <th>  AIC                </th> <td>5484.296</td> 
+</tr>
+<tr>
+  <th>Time:</th>                <td>12:57:23</td>     <th>  BIC                </th> <td>5509.109</td> 
+</tr>
+<tr>
+  <th>Sample:</th>             <td>01-01-2011</td>    <th>  HQIC               </th> <td>5493.132</td> 
+</tr>
+<tr>
+  <th></th>                   <td>- 12-31-2020</td>   <th>                     </th>     <td> </td>    
+</tr>
+<tr>
+  <th>Covariance Type:</th>        <td>opg</td>       <th>                     </th>     <td> </td>    
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+     <td></td>       <th>coef</th>     <th>std err</th>      <th>z</th>      <th>P>|z|</th>  <th>[0.025</th>    <th>0.975]</th>  
+</tr>
+<tr>
+  <th>const</th>  <td>    0.0593</td> <td>    0.025</td> <td>    2.338</td> <td> 0.019</td> <td>    0.010</td> <td>    0.109</td>
+</tr>
+<tr>
+  <th>ar.L1</th>  <td>    0.6961</td> <td>    0.018</td> <td>   38.043</td> <td> 0.000</td> <td>    0.660</td> <td>    0.732</td>
+</tr>
+<tr>
+  <th>ma.L1</th>  <td>   -0.1208</td> <td>    0.024</td> <td>   -5.031</td> <td> 0.000</td> <td>   -0.168</td> <td>   -0.074</td>
+</tr>
+<tr>
+  <th>sigma2</th> <td>    0.2621</td> <td>    0.006</td> <td>   43.612</td> <td> 0.000</td> <td>    0.250</td> <td>    0.274</td>
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+  <th>Ljung-Box (L1) (Q):</th>     <td>0.14</td> <th>  Jarque-Bera (JB):  </th> <td>95.96</td>
+</tr>
+<tr>
+  <th>Prob(Q):</th>                <td>0.71</td> <th>  Prob(JB):          </th> <td>0.00</td> 
+</tr>
+<tr>
+  <th>Heteroskedasticity (H):</th> <td>1.20</td> <th>  Skew:              </th> <td>-0.37</td>
+</tr>
+<tr>
+  <th>Prob(H) (two-sided):</th>    <td>0.00</td> <th>  Kurtosis:          </th> <td>3.30</td> 
+</tr>
+</table><br/><br/>Warnings:<br/>[1] Covariance matrix calculated using the outer product of gradients (complex-step).
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">f</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">open</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;arma.tex&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;w&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">f</span><span style="color:#908caa">.</span><span style="color:#ebbcba">write</span><span style="color:#908caa">(</span><span style="color:#ebbcba">model</span><span style="color:#908caa">.</span><span style="color:#ebbcba">summary</span><span style="color:#908caa">()</span><span style="color:#908caa">.</span><span style="color:#ebbcba">as_latex</span><span style="color:#908caa">())</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">f</span><span style="color:#908caa">.</span><span style="color:#ebbcba">close</span><span style="color:#908caa">()</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">figure</span><span style="color:#908caa">(</span><span style="color:#ebbcba">figsize</span><span style="color:#908caa">=</span><span style="color:#908caa">(</span><span style="color:#f6c177">30</span><span style="color:#908caa">,</span><span style="color:#f6c177">10</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6e6a86"># plt.plot(predictions, c=&#39;g&#39;)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;cleaned&#39;</span><span style="color:#908caa">],</span> <span style="color:#ebbcba">c</span><span style="color:#908caa">=</span><span style="color:#f6c177">&#39;b&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">model</span><span style="color:#908caa">.</span><span style="color:#ebbcba">fittedvalues</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">c</span><span style="color:#908caa">=</span><span style="color:#f6c177">&#39;r&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">title</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Model fit over the whole timespan&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">25</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">xlabel</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Date&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">18</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">legend</span><span style="color:#908caa">([</span><span style="color:#f6c177">&#39;Observed data&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;Model fit&#39;</span><span style="color:#908caa">],</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">15</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">savefig</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;armafitall.png&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><p><img src="stf_project_files/stf_project_48_0.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">figure</span><span style="color:#908caa">(</span><span style="color:#ebbcba">figsize</span><span style="color:#908caa">=</span><span style="color:#908caa">(</span><span style="color:#f6c177">30</span><span style="color:#908caa">,</span><span style="color:#f6c177">10</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;arma_fit&#39;</span><span style="color:#908caa">]</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">model</span><span style="color:#908caa">.</span><span style="color:#ebbcba">fittedvalues</span>
+</span></span><span style="display:flex;"><span><span style="color:#6e6a86"># plt.plot(predictions, c=&#39;g&#39;)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;cleaned&#39;</span><span style="color:#908caa">]</span><span style="color:#908caa">.</span><span style="color:#ebbcba">iloc</span><span style="color:#908caa">[</span><span style="color:#f6c177">365</span><span style="color:#908caa">:</span><span style="color:#f6c177">365</span><span style="color:#908caa">*</span><span style="color:#f6c177">2</span><span style="color:#908caa">],</span> <span style="color:#ebbcba">c</span><span style="color:#908caa">=</span><span style="color:#f6c177">&#39;b&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;arma_fit&#39;</span><span style="color:#908caa">]</span><span style="color:#908caa">.</span><span style="color:#ebbcba">iloc</span><span style="color:#908caa">[</span><span style="color:#f6c177">365</span><span style="color:#908caa">:</span><span style="color:#f6c177">365</span><span style="color:#908caa">*</span><span style="color:#f6c177">2</span><span style="color:#908caa">],</span> <span style="color:#ebbcba">c</span><span style="color:#908caa">=</span><span style="color:#f6c177">&#39;r&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">title</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Model fit in 2012&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">25</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">xlabel</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Date&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">18</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">legend</span><span style="color:#908caa">([</span><span style="color:#f6c177">&#39;Observed data&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;Model fit&#39;</span><span style="color:#908caa">],</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">15</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">savefig</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;armafit1year.png&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><p><img src="stf_project_files/stf_project_49_0.png" alt="png"></p>
+<p><strong>The statsmodels library returns four plots that describe the model fit.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">fig</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">figure</span><span style="color:#908caa">(</span><span style="color:#ebbcba">figsize</span><span style="color:#908caa">=</span><span style="color:#908caa">(</span><span style="color:#f6c177">20</span><span style="color:#908caa">,</span><span style="color:#f6c177">20</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">a</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">model</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot_diagnostics</span><span style="color:#908caa">(</span><span style="color:#ebbcba">fig</span><span style="color:#908caa">=</span><span style="color:#ebbcba">fig</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">savefig</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;residplot.png&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><pre><code>C:\ProgramData\Anaconda3\lib\site-packages\statsmodels\graphics\gofplots.py:993: UserWarning: marker is redundantly defined by the 'marker' keyword argument and the fmt string &quot;bo&quot; (-&gt; marker='o'). The keyword argument will take precedence.
+  ax.plot(x, y, fmt, **plot_style)
+</code></pre>
+<p><img src="stf_project_files/stf_project_51_1.png" alt="png"></p>
+
+        </div>
+    </div>
+</details>
+
+
+<!-- 
+
+
+
+
+<details class="nb-container" open>
+    <summary class="nb-summary">
+        <div class="nb-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+        <polyline points="10 9 9 9 8 9"></polyline>
+      </svg>
+            <span>Notebook Analysis</span>
+        </div>
+        <div class="nb-meta">
+            <span class="nb-time">15 min read</span>
+            <span class="nb-toggle-hint">Click to collapse</span>
+        </div>
+    </summary>
+    <div class="nb-body">
+        <div class="nb-content">
+            <h1 id="modelling-power-load-of-solar-energy">Modelling Power Load of Solar Energy</h1>
+<h2 id="david-schulte">David Schulte</h2>
+<h2 id="course-work-statistical-tools-in-finance-and-insurance">Course work: Statistical Tools in Finance and Insurance</h2>
+<h2 id="prof-dr-lópez-cabrera">Prof. Dr. López Cabrera</h2>
+<h2 id="imports-and-helper-functions">Imports and helper functions</h2>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">oss</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">pandas</span> <span style="color:#31748f">as</span> <span style="color:#ebbcba">pd</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">from</span> <span style="color:#ebbcba">matplotlib</span> <span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">pyplot</span> <span style="color:#31748f">as</span> <span style="color:#ebbcba">plt</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">numpy</span> <span style="color:#31748f">as</span> <span style="color:#ebbcba">np</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">from</span> <span style="color:#ebbcba">statsmodels.graphics.tsaplots</span> <span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">plot_acf</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">plot_pacf</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">statsmodels.api</span> <span style="color:#31748f">as</span> <span style="color:#ebbcba">sm</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">from</span> <span style="color:#ebbcba">statsmodels.tsa.arima.model</span> <span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">ARIMA</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">from</span> <span style="color:#ebbcba">statsmodels.tsa.stattools</span> <span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">acf</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">pacf</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">from</span> <span style="color:#ebbcba">statsmodels.api</span> <span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">OLS</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">add_constant</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">from</span> <span style="color:#ebbcba">sklearn.linear_model</span> <span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">LinearRegression</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">from</span> <span style="color:#ebbcba">sklearn.preprocessing</span> <span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">MinMaxScaler</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">from</span> <span style="color:#ebbcba">sklearn.neighbors</span> <span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">KernelDensity</span>
+</span></span><span style="display:flex;"><span><span style="color:#c4a7e7">import</span> <span style="color:#ebbcba">seaborn</span> <span style="color:#31748f">as</span> <span style="color:#ebbcba">sns</span>
+</span></span></code></pre></div><h2 id="loading-the-data">Loading the data</h2>
+<p><strong>First we load the data from all four network operators from 2010 until 2020.<br>
+The data can be accessed on <a href="https://energy-charts.info/">https://energy-charts.info/</a>.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">header_list</span> <span style="color:#908caa">=</span> <span style="color:#908caa">[</span><span style="color:#f6c177">&#39;Date&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;50Hertz&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;Amprion&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;Tennet&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;Transnet BW&#39;</span><span style="color:#908caa">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#31748f">for</span> <span style="color:#ebbcba">year</span> <span style="color:#908caa">in</span> <span style="color:#ebbcba">range</span><span style="color:#908caa">(</span><span style="color:#f6c177">2010</span><span style="color:#908caa">,</span> <span style="color:#f6c177">2021</span><span style="color:#908caa">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">filename</span> <span style="color:#908caa">=</span> <span style="color:#f6c177">f</span><span style="color:#f6c177">&#34;energy-charts_Electricity_production_in_Germany_in_</span><span style="color:#f6c177">{</span><span style="color:#ebbcba">year</span><span style="color:#f6c177">}</span><span style="color:#f6c177">.csv&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">filepath</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">os</span><span style="color:#908caa">.</span><span style="color:#ebbcba">path</span><span style="color:#908caa">.</span><span style="color:#ebbcba">join</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;data&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">filename</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">df_current</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">pd</span><span style="color:#908caa">.</span><span style="color:#ebbcba">read_csv</span><span style="color:#908caa">(</span><span style="color:#ebbcba">filepath</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">sep</span><span style="color:#908caa">=</span><span style="color:#f6c177">&#39;,&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">names</span><span style="color:#908caa">=</span><span style="color:#ebbcba">header_list</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">skiprows</span><span style="color:#908caa">=</span><span style="color:#f6c177">1</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">df_current</span><span style="color:#908caa">.</span><span style="color:#ebbcba">fillna</span><span style="color:#908caa">(</span><span style="color:#f6c177">0</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">inplace</span><span style="color:#908caa">=</span><span style="color:#31748f">True</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6e6a86">#     df_current[&#34;all&#34;] = df_current[&#34;50Hertz&#34;] + df_current[&#34;Amprion&#34;] + df_current[&#34;Tennet&#34;] + df_current[&#34;Transnet BW&#34;]</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    <span style="color:#31748f">if</span> <span style="color:#ebbcba">year</span> <span style="color:#908caa">==</span> <span style="color:#f6c177">2010</span><span style="color:#908caa">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ebbcba">df</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">df_current</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#31748f">else</span><span style="color:#908caa">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ebbcba">df</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">pd</span><span style="color:#908caa">.</span><span style="color:#ebbcba">concat</span><span style="color:#908caa">([</span><span style="color:#ebbcba">df</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">df_current</span><span style="color:#908caa">])</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">df</span><span style="color:#908caa">.</span><span style="color:#ebbcba">head</span><span style="color:#908caa">()</span>
+</span></span></code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>50Hertz</th>
+      <th>Amprion</th>
+      <th>Tennet</th>
+      <th>Transnet BW</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2009-12-31T23:00:00.000Z</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2010-01-01T00:00:00.000Z</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2010-01-01T01:00:00.000Z</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2010-01-01T02:00:00.000Z</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2010-01-01T03:00:00.000Z</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p><strong>We sum up the energy generation by the network operators to get the total energy generation. Since the data contains values for different time intervals, we aggregate them to get daily power generation.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#34;all&#34;</span><span style="color:#908caa">]</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#34;50Hertz&#34;</span><span style="color:#908caa">]</span> <span style="color:#908caa">+</span> <span style="color:#ebbcba">df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#34;Amprion&#34;</span><span style="color:#908caa">]</span> <span style="color:#908caa">+</span> <span style="color:#ebbcba">df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#34;Tennet&#34;</span><span style="color:#908caa">]</span> <span style="color:#908caa">+</span> <span style="color:#ebbcba">df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#34;Transnet BW&#34;</span><span style="color:#908caa">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;Date&#39;</span><span style="color:#908caa">]</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">pd</span><span style="color:#908caa">.</span><span style="color:#ebbcba">to_datetime</span><span style="color:#908caa">(</span><span style="color:#ebbcba">df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;Date&#39;</span><span style="color:#908caa">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">daily_df</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">df</span><span style="color:#908caa">.</span><span style="color:#ebbcba">groupby</span><span style="color:#908caa">([</span><span style="color:#ebbcba">df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;Date&#39;</span><span style="color:#908caa">]</span><span style="color:#908caa">.</span><span style="color:#ebbcba">dt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">date</span><span style="color:#908caa">])</span><span style="color:#908caa">.</span><span style="color:#ebbcba">mean</span><span style="color:#908caa">()[</span><span style="color:#f6c177">1</span><span style="color:#908caa">:]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">.</span><span style="color:#ebbcba">head</span><span style="color:#908caa">()</span>
+</span></span></code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>50Hertz</th>
+      <th>Amprion</th>
+      <th>Tennet</th>
+      <th>Transnet BW</th>
+      <th>all</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2010-01-01</th>
+      <td>0.004458</td>
+      <td>0.0</td>
+      <td>0.048333</td>
+      <td>0.023208</td>
+      <td>0.076000</td>
+    </tr>
+    <tr>
+      <th>2010-01-02</th>
+      <td>0.004333</td>
+      <td>0.0</td>
+      <td>0.043250</td>
+      <td>0.020833</td>
+      <td>0.068417</td>
+    </tr>
+    <tr>
+      <th>2010-01-03</th>
+      <td>0.002167</td>
+      <td>0.0</td>
+      <td>0.031625</td>
+      <td>0.015167</td>
+      <td>0.048958</td>
+    </tr>
+    <tr>
+      <th>2010-01-04</th>
+      <td>0.001417</td>
+      <td>0.0</td>
+      <td>0.088750</td>
+      <td>0.042667</td>
+      <td>0.132833</td>
+    </tr>
+    <tr>
+      <th>2010-01-05</th>
+      <td>0.002250</td>
+      <td>0.0</td>
+      <td>0.042250</td>
+      <td>0.020333</td>
+      <td>0.064833</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p><strong>This is how our data looks like.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">figure</span><span style="color:#908caa">(</span><span style="color:#ebbcba">figsize</span><span style="color:#908caa">=</span><span style="color:#908caa">(</span><span style="color:#f6c177">30</span><span style="color:#908caa">,</span><span style="color:#f6c177">10</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;all&#39;</span><span style="color:#908caa">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">xlabel</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Year&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">30</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">ylabel</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Daily Solar Power Generation in GW&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">30</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">title</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Daily Solar Power Generation in Germany&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">40</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">savefig</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;data.png&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><p><img src="stf_project_files/stf_project_10_0.png" alt="png"></p>
+<h2 id="distribution-of-the-data">Distribution of the data</h2>
+<p><strong>Let us take a look at the distribution of daily power generation.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">sns</span><span style="color:#908caa">.</span><span style="color:#ebbcba">displot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;all&#39;</span><span style="color:#908caa">],</span> <span style="color:#ebbcba">kde</span><span style="color:#908caa">=</span><span style="color:#31748f">True</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">xlabel</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;U&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">savefig</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;datadistr.png&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><p><img src="stf_project_files/stf_project_13_0.png" alt="png"></p>
+<p><strong>We can see that the distribution is skewed to the left. Since we will later apply a linear regression, we would prefer data that is approximately normally distributed. To shift our distribution, we apply the following transformation.</strong></p>
+<p><strong>First, we apply Min-Max scaling.</strong></p>
+<p>$\tilde{U_t}=\frac{U_t-U_{min}}{U_{max}-U_{min}}$</p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">scaler</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">MinMaxScaler</span><span style="color:#908caa">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">scaled</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">scaler</span><span style="color:#908caa">.</span><span style="color:#ebbcba">fit_transform</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;all&#39;</span><span style="color:#908caa">]</span><span style="color:#908caa">.</span><span style="color:#ebbcba">to_numpy</span><span style="color:#908caa">()</span><span style="color:#908caa">.</span><span style="color:#ebbcba">reshape</span><span style="color:#908caa">(</span><span style="color:#908caa">-</span><span style="color:#f6c177">1</span><span style="color:#908caa">,</span> <span style="color:#f6c177">1</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">epsilon</span> <span style="color:#908caa">=</span> <span style="color:#f6c177">0.1</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">scaled</span><span style="color:#908caa">[</span><span style="color:#ebbcba">scaled</span><span style="color:#908caa">==</span><span style="color:#f6c177">0</span><span style="color:#908caa">]</span><span style="color:#908caa">=</span><span style="color:#ebbcba">epsilon</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">scaled</span><span style="color:#908caa">[</span><span style="color:#ebbcba">scaled</span><span style="color:#908caa">==</span><span style="color:#f6c177">1</span><span style="color:#908caa">]</span><span style="color:#908caa">=</span><span style="color:#f6c177">1</span><span style="color:#908caa">-</span><span style="color:#ebbcba">epsilon</span>
+</span></span></code></pre></div><p><strong>Then, we apply a logit normal transformation to the scaled values.</strong></p>
+<p>$U^*=\log{\left(\frac{\tilde{U}_t}{1-\tilde{U}_t}\right)}$</p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">transformed</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">log</span><span style="color:#908caa">(</span><span style="color:#ebbcba">scaled</span><span style="color:#908caa">/</span><span style="color:#908caa">(</span><span style="color:#f6c177">1</span><span style="color:#908caa">-</span><span style="color:#ebbcba">scaled</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;transformed&#39;</span><span style="color:#908caa">]</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">transformed</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">sns</span><span style="color:#908caa">.</span><span style="color:#ebbcba">displot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">transformed</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">kde</span><span style="color:#908caa">=</span><span style="color:#31748f">True</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">legend</span><span style="color:#908caa">=</span><span style="color:#31748f">None</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">xlabel</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;$U^*$&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">savefig</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;transformeddistr.png&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><p><img src="stf_project_files/stf_project_20_0.png" alt="png"></p>
+<p><strong>Let us take a look at our transformed time series.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;transformed&#39;</span><span style="color:#908caa">])</span>
+</span></span></code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x22e1b2926d0&gt;]
+</code></pre>
+<p><img src="stf_project_files/stf_project_22_1.png" alt="png"></p>
+<h2 id="seasonality">Seasonality</h2>
+<p><strong>We can see a strong seasonal component in the data. To get rid of it, we apply a linear regression and continue working with its residuals.<br>
+After thinking about the underlying process behind the data and experimenting with it, we model our data as following:</strong></p>
+<p>$U^*_t = \beta_0 + \beta_1 \cdot t + \beta_2 \cdot \sqrt[4]t \cos \left(2\pi \frac{t-11}{365}\right)+X_t$</p>
+<ul>
+<li>$\beta_0$ <strong>is the intercept.</strong></li>
+<li>$\beta_1$ <strong>is a linear time coefficient. The behind it is that the amount of solar panels increases steadily over time.</strong></li>
+<li>$\beta_2$ <strong>models seasonality. The cosine term describes the yearly seasonality, as power generation heavily depends on natural seasons. The wave is shifted by 11 days. That is because winter solstice is exactly 11 days before New Year. Furthermore, we scale seasonal component by the fourth square-root of time, as a non-linear development of solar energy plants comes into play.</strong></li>
+</ul>
+<p><strong>We will use the scikit-learn library for implementation. To get more more information about the regression, we will also conduct it using the statsmodels library and print the model summary.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#31748f">def</span> <span style="color:#ebbcba">get_seasonal_component</span><span style="color:#908caa">(</span><span style="color:#ebbcba">timeseries</span><span style="color:#908caa">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">time</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">arange</span><span style="color:#908caa">(</span><span style="color:#ebbcba">len</span><span style="color:#908caa">(</span><span style="color:#ebbcba">timeseries</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">x_vals</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">array</span><span style="color:#908caa">((</span><span style="color:#ebbcba">time</span><span style="color:#908caa">,</span> <span style="color:#908caa">(</span><span style="color:#ebbcba">time</span><span style="color:#908caa">**</span><span style="color:#f6c177">0.25</span><span style="color:#908caa">*</span><span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">cos</span><span style="color:#908caa">(</span><span style="color:#f6c177">2</span><span style="color:#908caa">*</span><span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">pi</span><span style="color:#908caa">*</span><span style="color:#908caa">(</span><span style="color:#ebbcba">time</span><span style="color:#908caa">+</span><span style="color:#f6c177">11</span><span style="color:#908caa">)</span><span style="color:#908caa">/</span><span style="color:#f6c177">365</span><span style="color:#908caa">))))</span><span style="color:#908caa">.</span><span style="color:#ebbcba">T</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">lm</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">LinearRegression</span><span style="color:#908caa">()</span><span style="color:#908caa">.</span><span style="color:#ebbcba">fit</span><span style="color:#908caa">(</span><span style="color:#ebbcba">x_vals</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">timeseries</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">print</span><span style="color:#908caa">(</span><span style="color:#f6c177">f</span><span style="color:#f6c177">&#39;Intercept: </span><span style="color:#f6c177">{</span><span style="color:#ebbcba">lm</span><span style="color:#908caa">.</span><span style="color:#ebbcba">intercept_</span><span style="color:#f6c177">}</span><span style="color:#f6c177">&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">print</span><span style="color:#908caa">(</span><span style="color:#f6c177">f</span><span style="color:#f6c177">&#39;Coefficients: </span><span style="color:#f6c177">{</span><span style="color:#ebbcba">lm</span><span style="color:#908caa">.</span><span style="color:#ebbcba">coef_</span><span style="color:#f6c177">}</span><span style="color:#f6c177">&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ebbcba">print</span><span style="color:#908caa">(</span><span style="color:#f6c177">f</span><span style="color:#f6c177">&#39;R-squared: </span><span style="color:#f6c177">{</span><span style="color:#ebbcba">lm</span><span style="color:#908caa">.</span><span style="color:#ebbcba">score</span><span style="color:#908caa">(</span><span style="color:#ebbcba">x_vals</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">timeseries</span><span style="color:#908caa">)</span><span style="color:#f6c177">}</span><span style="color:#f6c177">&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#31748f">return</span> <span style="color:#ebbcba">lm</span><span style="color:#908caa">.</span><span style="color:#ebbcba">predict</span><span style="color:#908caa">(</span><span style="color:#ebbcba">x_vals</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">time</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">arange</span><span style="color:#908caa">(</span><span style="color:#ebbcba">len</span><span style="color:#908caa">(</span><span style="color:#ebbcba">transformed</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">x_vals</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">array</span><span style="color:#908caa">((</span><span style="color:#ebbcba">time</span><span style="color:#908caa">,</span> <span style="color:#908caa">(</span><span style="color:#ebbcba">time</span><span style="color:#908caa">**</span><span style="color:#f6c177">0.25</span><span style="color:#908caa">*</span><span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">cos</span><span style="color:#908caa">(</span><span style="color:#f6c177">2</span><span style="color:#908caa">*</span><span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">pi</span><span style="color:#908caa">*</span><span style="color:#908caa">(</span><span style="color:#ebbcba">time</span><span style="color:#908caa">+</span><span style="color:#f6c177">11</span><span style="color:#908caa">)</span><span style="color:#908caa">/</span><span style="color:#f6c177">365</span><span style="color:#908caa">))))</span><span style="color:#908caa">.</span><span style="color:#ebbcba">T</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">model</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">sm</span><span style="color:#908caa">.</span><span style="color:#ebbcba">OLS</span><span style="color:#908caa">(</span><span style="color:#ebbcba">transformed</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">sm</span><span style="color:#908caa">.</span><span style="color:#ebbcba">add_constant</span><span style="color:#908caa">(</span><span style="color:#ebbcba">x_vals</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">results</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">model</span><span style="color:#908caa">.</span><span style="color:#ebbcba">fit</span><span style="color:#908caa">()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">results</span><span style="color:#908caa">.</span><span style="color:#ebbcba">summary</span><span style="color:#908caa">()</span>
+</span></span></code></pre></div><table class="simpletable">
+<caption>OLS Regression Results</caption>
+<tr>
+  <th>Dep. Variable:</th>            <td>y</td>        <th>  R-squared:         </th> <td>   0.724</td>
+</tr>
+<tr>
+  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared:    </th> <td>   0.724</td>
+</tr>
+<tr>
+  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   5272.</td>
+</tr>
+<tr>
+  <th>Date:</th>             <td>Sun, 07 Aug 2022</td> <th>  Prob (F-statistic):</th>  <td>  0.00</td> 
+</tr>
+<tr>
+  <th>Time:</th>                 <td>12:57:19</td>     <th>  Log-Likelihood:    </th> <td> -4394.5</td>
+</tr>
+<tr>
+  <th>No. Observations:</th>      <td>  4018</td>      <th>  AIC:               </th> <td>   8795.</td>
+</tr>
+<tr>
+  <th>Df Residuals:</th>          <td>  4015</td>      <th>  BIC:               </th> <td>   8814.</td>
+</tr>
+<tr>
+  <th>Df Model:</th>              <td>     2</td>      <th>                     </th>     <td> </td>   
+</tr>
+<tr>
+  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>     <td> </td>   
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+    <td></td>       <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>  
+</tr>
+<tr>
+  <th>const</th> <td>   -2.0841</td> <td>    0.023</td> <td>  -91.413</td> <td> 0.000</td> <td>   -2.129</td> <td>   -2.039</td>
+</tr>
+<tr>
+  <th>x1</th>    <td>    0.0005</td> <td> 9.83e-06</td> <td>   46.923</td> <td> 0.000</td> <td>    0.000</td> <td>    0.000</td>
+</tr>
+<tr>
+  <th>x2</th>    <td>   -0.2282</td> <td>    0.002</td> <td>  -92.181</td> <td> 0.000</td> <td>   -0.233</td> <td>   -0.223</td>
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+  <th>Omnibus:</th>       <td>507.081</td> <th>  Durbin-Watson:     </th> <td>   0.620</td> 
+</tr>
+<tr>
+  <th>Prob(Omnibus):</th> <td> 0.000</td>  <th>  Jarque-Bera (JB):  </th> <td>1086.897</td> 
+</tr>
+<tr>
+  <th>Skew:</th>          <td>-0.766</td>  <th>  Prob(JB):          </th> <td>9.62e-237</td>
+</tr>
+<tr>
+  <th>Kurtosis:</th>      <td> 5.036</td>  <th>  Cond. No.          </th> <td>4.64e+03</td> 
+</tr>
+</table><br/><br/>Notes:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.<br/>[2] The condition number is large, 4.64e+03. This might indicate that there are<br/>strong multicollinearity or other numerical problems.
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">f</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">open</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;ols.tex&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;w&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">f</span><span style="color:#908caa">.</span><span style="color:#ebbcba">write</span><span style="color:#908caa">(</span><span style="color:#ebbcba">results</span><span style="color:#908caa">.</span><span style="color:#ebbcba">summary</span><span style="color:#908caa">(</span><span style="color:#ebbcba">xname</span><span style="color:#908caa">=</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;beta0&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;beta1&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;beta2&#39;</span><span style="color:#908caa">])</span><span style="color:#908caa">.</span><span style="color:#ebbcba">as_latex</span><span style="color:#908caa">())</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">f</span><span style="color:#908caa">.</span><span style="color:#ebbcba">close</span><span style="color:#908caa">()</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;seasonality&#39;</span><span style="color:#908caa">]</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">get_seasonal_component</span><span style="color:#908caa">(</span><span style="color:#ebbcba">transformed</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;cleaned&#39;</span><span style="color:#908caa">]</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;transformed&#39;</span><span style="color:#908caa">]</span> <span style="color:#908caa">-</span> <span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;seasonality&#39;</span><span style="color:#908caa">]</span>
+</span></span></code></pre></div><pre><code>Intercept: [-2.08409933]
+Coefficients: [[ 0.00046127 -0.22820751]]
+R-squared: 0.7242120048393265
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">figure</span><span style="color:#908caa">(</span><span style="color:#ebbcba">figsize</span><span style="color:#908caa">=</span><span style="color:#908caa">(</span><span style="color:#f6c177">15</span><span style="color:#908caa">,</span><span style="color:#f6c177">5</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;transformed&#39;</span><span style="color:#908caa">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;seasonality&#39;</span><span style="color:#908caa">],</span> <span style="color:#ebbcba">c</span><span style="color:#908caa">=</span><span style="color:#f6c177">&#39;r&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">linewidth</span><span style="color:#908caa">=</span><span style="color:#f6c177">3</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">legend</span><span style="color:#908caa">([</span><span style="color:#f6c177">&#39;Observed data&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;Regression fit&#39;</span><span style="color:#908caa">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">xlabel</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Date&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">12</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">savefig</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;seasonality.png&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><p><img src="stf_project_files/stf_project_30_0.png" alt="png"></p>
+<h3 id="residuals-after-regression">Residuals after regression</h3>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;cleaned&#39;</span><span style="color:#908caa">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">title</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Residual $X_t$&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">15</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">xlabel</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Date&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">12</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">savefig</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;afterlm.png&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><p><img src="stf_project_files/stf_project_32_0.png" alt="png"></p>
+<p><strong>The residuals look good, except in the very beginning. That is no problem, since we can just drop the first year of our data and work with the remaining 10 years.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">daily_df</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">365</span><span style="color:#908caa">:]</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">.</span><span style="color:#ebbcba">head</span><span style="color:#908caa">()</span>
+</span></span></code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>50Hertz</th>
+      <th>Amprion</th>
+      <th>Tennet</th>
+      <th>Transnet BW</th>
+      <th>all</th>
+      <th>transformed</th>
+      <th>seasonality</th>
+      <th>cleaned</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2011-01-01</th>
+      <td>0.011042</td>
+      <td>0.022042</td>
+      <td>0.058250</td>
+      <td>0.009917</td>
+      <td>0.101250</td>
+      <td>-4.775061</td>
+      <td>-2.895385</td>
+      <td>-1.879675</td>
+    </tr>
+    <tr>
+      <th>2011-01-02</th>
+      <td>0.024542</td>
+      <td>0.072958</td>
+      <td>0.090208</td>
+      <td>0.035667</td>
+      <td>0.223375</td>
+      <td>-3.973572</td>
+      <td>-2.892215</td>
+      <td>-1.081357</td>
+    </tr>
+    <tr>
+      <th>2011-01-03</th>
+      <td>0.022583</td>
+      <td>0.080875</td>
+      <td>0.066042</td>
+      <td>0.078875</td>
+      <td>0.248375</td>
+      <td>-3.865377</td>
+      <td>-2.888749</td>
+      <td>-0.976628</td>
+    </tr>
+    <tr>
+      <th>2011-01-04</th>
+      <td>0.019125</td>
+      <td>0.089500</td>
+      <td>0.067167</td>
+      <td>0.067958</td>
+      <td>0.243750</td>
+      <td>-3.884564</td>
+      <td>-2.884988</td>
+      <td>-0.999576</td>
+    </tr>
+    <tr>
+      <th>2011-01-05</th>
+      <td>0.051042</td>
+      <td>0.191000</td>
+      <td>0.205750</td>
+      <td>0.106500</td>
+      <td>0.554292</td>
+      <td>-3.036477</td>
+      <td>-2.880932</td>
+      <td>-0.155545</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p><strong>We will print the RMSE of our residuals.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">rmse</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">linalg</span><span style="color:#908caa">.</span><span style="color:#ebbcba">norm</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;cleaned&#39;</span><span style="color:#908caa">])</span><span style="color:#908caa">/</span><span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">sqrt</span><span style="color:#908caa">(</span><span style="color:#ebbcba">len</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">print</span><span style="color:#908caa">(</span><span style="color:#f6c177">f</span><span style="color:#f6c177">&#39;RMSE of residuals: </span><span style="color:#f6c177">{</span><span style="color:#ebbcba">rmse</span><span style="color:#908caa">.</span><span style="color:#ebbcba">round</span><span style="color:#908caa">(</span><span style="color:#f6c177">4</span><span style="color:#908caa">)</span><span style="color:#f6c177">}</span><span style="color:#f6c177">&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><pre><code>RMSE of residuals: 0.6584
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">sns</span><span style="color:#908caa">.</span><span style="color:#ebbcba">displot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;cleaned&#39;</span><span style="color:#908caa">],</span> <span style="color:#ebbcba">kde</span><span style="color:#908caa">=</span><span style="color:#31748f">True</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x22e1b7145b0&gt;
+</code></pre>
+<p><img src="stf_project_files/stf_project_37_1.png" alt="png"></p>
+<p><strong>We can see that our residuals are approximately normally distributed.</strong></p>
+<h2 id="time-series-modelling">Time series modelling</h2>
+<p><strong>Now it is time to work on the time series. First, we inspect its partial autocorrelation.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">fig</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">plot_pacf</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;cleaned&#39;</span><span style="color:#908caa">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">xlabel</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Lags&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">12</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">title</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Partial Autocorrelation&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">15</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">savefig</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;pacf.png&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><p><img src="stf_project_files/stf_project_41_0.png" alt="png"></p>
+<p><strong>Based on this result, we apply a ARIMA(1,0,1) model.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">model</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">ARIMA</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;cleaned&#39;</span><span style="color:#908caa">],</span> <span style="color:#ebbcba">order</span><span style="color:#908caa">=</span><span style="color:#908caa">(</span><span style="color:#f6c177">1</span><span style="color:#908caa">,</span><span style="color:#f6c177">0</span><span style="color:#908caa">,</span><span style="color:#f6c177">1</span><span style="color:#908caa">))</span><span style="color:#908caa">.</span><span style="color:#ebbcba">fit</span><span style="color:#908caa">()</span>
+</span></span></code></pre></div><pre><code>C:\ProgramData\Anaconda3\lib\site-packages\statsmodels\tsa\base\tsa_model.py:524: ValueWarning: No frequency information was provided, so inferred frequency D will be used.
+  warnings.warn('No frequency information was'
+C:\ProgramData\Anaconda3\lib\site-packages\statsmodels\tsa\base\tsa_model.py:524: ValueWarning: No frequency information was provided, so inferred frequency D will be used.
+  warnings.warn('No frequency information was'
+C:\ProgramData\Anaconda3\lib\site-packages\statsmodels\tsa\base\tsa_model.py:524: ValueWarning: No frequency information was provided, so inferred frequency D will be used.
+  warnings.warn('No frequency information was'
+</code></pre>
+<p><strong>Again, we give out the residuals after applying the ARIMA model.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">rmse</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">linalg</span><span style="color:#908caa">.</span><span style="color:#ebbcba">norm</span><span style="color:#908caa">(</span><span style="color:#ebbcba">model</span><span style="color:#908caa">.</span><span style="color:#ebbcba">resid</span><span style="color:#908caa">)</span><span style="color:#908caa">/</span><span style="color:#ebbcba">np</span><span style="color:#908caa">.</span><span style="color:#ebbcba">sqrt</span><span style="color:#908caa">(</span><span style="color:#ebbcba">len</span><span style="color:#908caa">(</span><span style="color:#ebbcba">model</span><span style="color:#908caa">.</span><span style="color:#ebbcba">resid</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">print</span><span style="color:#908caa">(</span><span style="color:#f6c177">f</span><span style="color:#f6c177">&#39;RMSE of residuals after ARIMA: </span><span style="color:#f6c177">{</span><span style="color:#ebbcba">rmse</span><span style="color:#908caa">.</span><span style="color:#ebbcba">round</span><span style="color:#908caa">(</span><span style="color:#f6c177">4</span><span style="color:#908caa">)</span><span style="color:#f6c177">}</span><span style="color:#f6c177">&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><pre><code>RMSE of residuals after ARIMA: 0.5124
+</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">model</span><span style="color:#908caa">.</span><span style="color:#ebbcba">summary</span><span style="color:#908caa">()</span>
+</span></span></code></pre></div><table class="simpletable">
+<caption>SARIMAX Results</caption>
+<tr>
+  <th>Dep. Variable:</th>        <td>cleaned</td>     <th>  No. Observations:  </th>   <td>3653</td>   
+</tr>
+<tr>
+  <th>Model:</th>            <td>ARIMA(1, 0, 1)</td>  <th>  Log Likelihood     </th> <td>-2738.148</td>
+</tr>
+<tr>
+  <th>Date:</th>            <td>Sun, 07 Aug 2022</td> <th>  AIC                </th> <td>5484.296</td> 
+</tr>
+<tr>
+  <th>Time:</th>                <td>12:57:23</td>     <th>  BIC                </th> <td>5509.109</td> 
+</tr>
+<tr>
+  <th>Sample:</th>             <td>01-01-2011</td>    <th>  HQIC               </th> <td>5493.132</td> 
+</tr>
+<tr>
+  <th></th>                   <td>- 12-31-2020</td>   <th>                     </th>     <td> </td>    
+</tr>
+<tr>
+  <th>Covariance Type:</th>        <td>opg</td>       <th>                     </th>     <td> </td>    
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+     <td></td>       <th>coef</th>     <th>std err</th>      <th>z</th>      <th>P>|z|</th>  <th>[0.025</th>    <th>0.975]</th>  
+</tr>
+<tr>
+  <th>const</th>  <td>    0.0593</td> <td>    0.025</td> <td>    2.338</td> <td> 0.019</td> <td>    0.010</td> <td>    0.109</td>
+</tr>
+<tr>
+  <th>ar.L1</th>  <td>    0.6961</td> <td>    0.018</td> <td>   38.043</td> <td> 0.000</td> <td>    0.660</td> <td>    0.732</td>
+</tr>
+<tr>
+  <th>ma.L1</th>  <td>   -0.1208</td> <td>    0.024</td> <td>   -5.031</td> <td> 0.000</td> <td>   -0.168</td> <td>   -0.074</td>
+</tr>
+<tr>
+  <th>sigma2</th> <td>    0.2621</td> <td>    0.006</td> <td>   43.612</td> <td> 0.000</td> <td>    0.250</td> <td>    0.274</td>
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+  <th>Ljung-Box (L1) (Q):</th>     <td>0.14</td> <th>  Jarque-Bera (JB):  </th> <td>95.96</td>
+</tr>
+<tr>
+  <th>Prob(Q):</th>                <td>0.71</td> <th>  Prob(JB):          </th> <td>0.00</td> 
+</tr>
+<tr>
+  <th>Heteroskedasticity (H):</th> <td>1.20</td> <th>  Skew:              </th> <td>-0.37</td>
+</tr>
+<tr>
+  <th>Prob(H) (two-sided):</th>    <td>0.00</td> <th>  Kurtosis:          </th> <td>3.30</td> 
+</tr>
+</table><br/><br/>Warnings:<br/>[1] Covariance matrix calculated using the outer product of gradients (complex-step).
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">f</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">open</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;arma.tex&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;w&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">f</span><span style="color:#908caa">.</span><span style="color:#ebbcba">write</span><span style="color:#908caa">(</span><span style="color:#ebbcba">model</span><span style="color:#908caa">.</span><span style="color:#ebbcba">summary</span><span style="color:#908caa">()</span><span style="color:#908caa">.</span><span style="color:#ebbcba">as_latex</span><span style="color:#908caa">())</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">f</span><span style="color:#908caa">.</span><span style="color:#ebbcba">close</span><span style="color:#908caa">()</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">figure</span><span style="color:#908caa">(</span><span style="color:#ebbcba">figsize</span><span style="color:#908caa">=</span><span style="color:#908caa">(</span><span style="color:#f6c177">30</span><span style="color:#908caa">,</span><span style="color:#f6c177">10</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6e6a86"># plt.plot(predictions, c=&#39;g&#39;)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;cleaned&#39;</span><span style="color:#908caa">],</span> <span style="color:#ebbcba">c</span><span style="color:#908caa">=</span><span style="color:#f6c177">&#39;b&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">model</span><span style="color:#908caa">.</span><span style="color:#ebbcba">fittedvalues</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">c</span><span style="color:#908caa">=</span><span style="color:#f6c177">&#39;r&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">title</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Model fit over the whole timespan&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">25</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">xlabel</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Date&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">18</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">legend</span><span style="color:#908caa">([</span><span style="color:#f6c177">&#39;Observed data&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;Model fit&#39;</span><span style="color:#908caa">],</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">15</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">savefig</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;armafitall.png&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><p><img src="stf_project_files/stf_project_48_0.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">figure</span><span style="color:#908caa">(</span><span style="color:#ebbcba">figsize</span><span style="color:#908caa">=</span><span style="color:#908caa">(</span><span style="color:#f6c177">30</span><span style="color:#908caa">,</span><span style="color:#f6c177">10</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;arma_fit&#39;</span><span style="color:#908caa">]</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">model</span><span style="color:#908caa">.</span><span style="color:#ebbcba">fittedvalues</span>
+</span></span><span style="display:flex;"><span><span style="color:#6e6a86"># plt.plot(predictions, c=&#39;g&#39;)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;cleaned&#39;</span><span style="color:#908caa">]</span><span style="color:#908caa">.</span><span style="color:#ebbcba">iloc</span><span style="color:#908caa">[</span><span style="color:#f6c177">365</span><span style="color:#908caa">:</span><span style="color:#f6c177">365</span><span style="color:#908caa">*</span><span style="color:#f6c177">2</span><span style="color:#908caa">],</span> <span style="color:#ebbcba">c</span><span style="color:#908caa">=</span><span style="color:#f6c177">&#39;b&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot</span><span style="color:#908caa">(</span><span style="color:#ebbcba">daily_df</span><span style="color:#908caa">[</span><span style="color:#f6c177">&#39;arma_fit&#39;</span><span style="color:#908caa">]</span><span style="color:#908caa">.</span><span style="color:#ebbcba">iloc</span><span style="color:#908caa">[</span><span style="color:#f6c177">365</span><span style="color:#908caa">:</span><span style="color:#f6c177">365</span><span style="color:#908caa">*</span><span style="color:#f6c177">2</span><span style="color:#908caa">],</span> <span style="color:#ebbcba">c</span><span style="color:#908caa">=</span><span style="color:#f6c177">&#39;r&#39;</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">title</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Model fit in 2012&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">25</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">xlabel</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;Date&#39;</span><span style="color:#908caa">,</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">18</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">legend</span><span style="color:#908caa">([</span><span style="color:#f6c177">&#39;Observed data&#39;</span><span style="color:#908caa">,</span> <span style="color:#f6c177">&#39;Model fit&#39;</span><span style="color:#908caa">],</span> <span style="color:#ebbcba">fontsize</span><span style="color:#908caa">=</span><span style="color:#f6c177">15</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">savefig</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;armafit1year.png&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><p><img src="stf_project_files/stf_project_49_0.png" alt="png"></p>
+<p><strong>The statsmodels library returns four plots that describe the model fit.</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e0def4;background-color:#191724;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ebbcba">fig</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">figure</span><span style="color:#908caa">(</span><span style="color:#ebbcba">figsize</span><span style="color:#908caa">=</span><span style="color:#908caa">(</span><span style="color:#f6c177">20</span><span style="color:#908caa">,</span><span style="color:#f6c177">20</span><span style="color:#908caa">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">a</span> <span style="color:#908caa">=</span> <span style="color:#ebbcba">model</span><span style="color:#908caa">.</span><span style="color:#ebbcba">plot_diagnostics</span><span style="color:#908caa">(</span><span style="color:#ebbcba">fig</span><span style="color:#908caa">=</span><span style="color:#ebbcba">fig</span><span style="color:#908caa">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ebbcba">plt</span><span style="color:#908caa">.</span><span style="color:#ebbcba">savefig</span><span style="color:#908caa">(</span><span style="color:#f6c177">&#39;residplot.png&#39;</span><span style="color:#908caa">)</span>
+</span></span></code></pre></div><pre><code>C:\ProgramData\Anaconda3\lib\site-packages\statsmodels\graphics\gofplots.py:993: UserWarning: marker is redundantly defined by the 'marker' keyword argument and the fmt string &quot;bo&quot; (-&gt; marker='o'). The keyword argument will take precedence.
+  ax.plot(x, y, fmt, **plot_style)
+</code></pre>
+<p><img src="stf_project_files/stf_project_51_1.png" alt="png"></p>
+
+        </div>
+    </div>
+</details>
+
+ -->
+<h2 id="learnings-and-outlook">Learnings and outlook</h2>
+<p>Even with limited knowledge about the underlying process, it is possible
+to model seasonality fairly easily. We do not need deep learning but can
+resort to a statistical time series model.<br>
+The scope of the project was fairly narrow and given more time, the
+following steps should be performed:</p>
+<ul>
+<li>Retransformation of the data to its original distribution</li>
+<li>Out-of-sample predictions</li>
+<li>Thorough evaluation of the performance and generality of the model</li>
+</ul>
+<p>Additionally, it would be interesting to also forecast power generation
+in the short term. To do this, one could incorporate different sources,
+like weather forecasts.</p>
+
+</content>
+
+
+
+<p>
+  
+</p>
+
+  </main>
+  <footer><footer>
+    <p>&copy; 2026 David Schulte</p>
+</footer>
+</footer>
+
+  
+</body>
+
+</html>

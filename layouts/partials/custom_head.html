@@ -1,0 +1,9 @@
+{{ $main := resources.Get "css/main.css" }}
+{{ $notebook := resources.Get "css/notebook.css" }}
+{{ $highlight := resources.Get "css/highlight.css" }}
+{{ $about := resources.Get "css/about.css" }}
+{{ $dataframe := resources.Get "css/dataframe.css" }}
+{{ $publications := resources.Get "css/publications.css" }}
+
+{{ $bundle := slice $main $notebook $highlight $about $dataframe $publications | resources.Concat "css/bundle.css" | resources.Minify }}
+<link rel="stylesheet" href="{{ $bundle.RelPermalink }}">

@@ -1,0 +1,81 @@
+.publication-description {
+    font-size: 1.1em;
+    color: var(--text-color);
+    margin: 1rem 0;
+}
+
+.publication-links {
+    margin: 1.5rem 0;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.publication-links .button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--link-color);
+    color: var(--background-color);
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    font-size: 1em;
+    font-family: inherit;
+}
+
+.publication-links .button:hover {
+    opacity: 0.9;
+    text-decoration: none;
+}
+
+.citation-box {
+    margin-top: 1rem;
+    border: 1px solid var(--text-color);
+    border-radius: 4px;
+}
+
+.citation-box summary {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    background: var(--background-color);
+    font-weight: bold;
+}
+
+.citation-box[open] summary {
+    border-bottom: 1px solid var(--text-color);
+}
+
+.citation-box pre {
+    margin: 0;
+    padding: 1rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 0.85em;
+    background: var(--background-color);
+}
+
+.citation-box pre code {
+    color: var(--text-color);
+}
+
+.abstract {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--text-color);
+}
+
+.abstract h2 {
+    font-size: 1.2em;
+    margin-bottom: 1rem;
+}
+
+.abstract p {
+    line-height: 1.6;
+}
+
+.home-list-authors {
+    font-size: 0.9em;
+    color: var(--text-color);
+    margin: 0.25rem 0;
+}

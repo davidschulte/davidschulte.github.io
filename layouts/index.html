@@ -1,0 +1,89 @@
+{{ define "main" }}
+<main>
+    <section id="about">
+        {{ .Content }}
+    </section>
+
+    {{ $publications := where site.RegularPages "Section" "publications" }}
+    {{ if $publications }}
+    <section id="publications">
+        <h2>Publications</h2>
+        <ul class="blog-posts">
+            {{ range $publications }}
+            <li>
+                <span>
+                    <i>
+                        <time datetime='{{ .Date.Format "2006-01-02" }}'>
+                            {{ .Date.Format "Jan 2, 2006" }}
+                        </time>
+                    </i>
+                </span>
+                <div>
+                    <a href="{{ .Permalink }}"><strong>{{ .Title }}</strong></a>
+                    {{ with .Params.authors }}
+                    <p class="home-list-authors">{{ . }}</p>
+                    {{ end }}
+                    {{ with .Description }}
+                    <p>{{ . }}</p>
+                    {{ end }}
+                    <p><em>{{ .Params.publication }}</em></p>
+                </div>
+            </li>
+            {{ end }}
+        </ul>
+        <p><a href="/publications/">View all publications →</a></p>
+    </section>
+    {{ end }}
+
+    {{ $projects := where site.RegularPages "Section" "projects" }}
+    {{ if $projects }}
+    <section id="projects">
+        <h2>Projects</h2>
+        <ul class="blog-posts">
+            {{ range $projects }}
+            <li>
+                <span>
+                    <i>
+                        <time datetime='{{ .Date.Format "2006-01-02" }}'>
+                            {{ .Date.Format "Jan 2, 2006" }}
+                        </time>
+                    </i>
+                </span>
+                <div>
+                    <a href="{{ .Permalink }}"><strong>{{ .Title }}</strong></a>
+                    {{ with .Description }}
+                    <p>{{ . }}</p>
+                    {{ end }}
+                </div>
+            </li>
+            {{ end }}
+        </ul>
+        <p><a href="/projects/">View all projects →</a></p>
+    </section>
+    {{ end }}
+
+    <section id="blog">
+        <h2>Blog Posts</h2>
+        {{ $posts := where site.RegularPages "Section" "posts" }}
+        {{ if $posts }}
+        <ul class="blog-posts">
+            {{ range $posts | first 5 }}
+            <li>
+                <span>
+                    <i>
+                        <time datetime='{{ .Date.Format "2006-01-02" }}'>
+                            {{ .Date.Format "Jan 2, 2006" }}
+                        </time>
+                    </i>
+                </span>
+                <a href="{{ .Permalink }}">{{ .Title }}</a>
+            </li>
+            {{ end }}
+        </ul>
+        {{ else }}
+        <p>No blog posts yet. Check back soon!</p>
+        {{ end }}
+        <p><a href="/posts/">View all posts →</a></p>
+    </section>
+</main>
+{{ end }}

@@ -1,40 +1,34 @@
-baseURL: https://example.org/
+baseURL: https://davidschulte.github.io/
 languageCode: en-us
-title: My New Hugo Site
-theme: PaperMod
-params:
-  # BRITTANY STYLE: Landing page setup
-  profileMode:
-    enabled: true
-    buttons:
-      - name: "PROJECTS"
-        url: "#projects"
-      - name: "BLOG"
-        url: "/posts"
-      - name: "CV"
-        url: "/cv.pdf"
-    title: "Your Name"
-    subtitle: "Full Stack Developer building minimalist web experiences."
-    displayFullContent: false
-    # High-quality square profile image in static/images/
-    imageUrl: "/images/me.png" 
-    imageWidth: 120
-    imageHeight: 120
-    # buttons:
-    #   - name: "Technical Blog"
-    #     url: "posts"
-    #   - name: "Resume (PDF)"
-    #     url: "/cv.pdf" # Points to static/cv.pdf
+title: David Schulte
+theme: hugo-bearblog
 
-  # SIMON STYLE: Information density & Navigation
+params:
+  description: "Personal webpage with my CV and blog posts"
+  author: "David Schulte"
+  
   mainSections:
     - posts
-  ShowReadingTime: true
-  ShowShareButtons: true
-  ShowPostNavLinks: true # Good for internal linking between posts
-  ShowCodeCopyButtons: true # Crucial for a dev blog
 
-  # The "Elegant" UI touches
-  label:
-    text: "Home"
-    icon: "/images/favicon.ico" # Use a minimalist icon
+menu:
+  main:
+    - name: "Projects"
+      url: "/projects/"
+      weight: 1
+    - name: "Publications"
+      url: "/publications/"
+      weight: 2
+    - name: "Blog"
+      url: "/posts/"
+      weight: 3
+    - name: "About"
+      url: "/about/"
+      weight: 4
+
+markup:
+  highlight:
+    noClasses: true
+    style: "rose-pine" # Hugo supports Rosé Pine natively
+  goldmark:
+      renderer:
+        unsafe: true

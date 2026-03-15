@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Reinforcement Learning for 3-player Chinese Checkers | David Schulte</title>
+<meta name="title" content="Reinforcement Learning for 3-player Chinese Checkers" />
+<meta name="description" content="Training an AI agent to play 3-player Chinese Checkers using reinforcement learning techniques." />
+<meta name="keywords" content="" />
+
+
+<meta property="og:url" content="http://localhost:1313/projects/proj-alphathesis/">
+  <meta property="og:site_name" content="David Schulte">
+  <meta property="og:title" content="Reinforcement Learning for 3-player Chinese Checkers">
+  <meta property="og:description" content="Training an AI agent to play 3-player Chinese Checkers using reinforcement learning techniques.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="projects">
+    <meta property="article:published_time" content="2026-02-08T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-02-08T00:00:00+00:00">
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Reinforcement Learning for 3-player Chinese Checkers">
+  <meta name="twitter:description" content="Training an AI agent to play 3-player Chinese Checkers using reinforcement learning techniques.">
+
+
+
+
+  <meta itemprop="name" content="Reinforcement Learning for 3-player Chinese Checkers">
+  <meta itemprop="description" content="Training an AI agent to play 3-player Chinese Checkers using reinforcement learning techniques.">
+  <meta itemprop="datePublished" content="2026-02-08T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-02-08T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1274">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  :root {
+    --width: 720px;
+    --font-main: Verdana, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color: #8b6fcb;
+    --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #01242e;
+      --heading-color: #eee;
+      --text-color: #ddd;
+      --link-color: #8cc2dd;
+      --visited-color: #8b6fcb;
+      --blockquote-color: #ccc;
+    }
+  }
+
+  body {
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    margin: auto;
+    padding: 20px;
+    max-width: var(--width);
+    text-align: left;
+    background-color: var(--background-color);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: var(--text-color);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-main);
+    color: var(--heading-color);
+  }
+
+  a {
+    color: var(--link-color);
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  nav a {
+    margin-right: 8px;
+  }
+
+  strong,
+  b {
+    color: var(--heading-color);
+  }
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  time {
+    font-family: monospace;
+    font-style: normal;
+    font-size: 15px;
+  }
+
+  main {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px dashed;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    font-family: monospace;
+    color: #111111;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: var(--blockquote-color);
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px 0;
+    text-align: center;
+  }
+
+  .title:hover {
+    text-decoration: none;
+  }
+
+  .title h1 {
+    font-size: 1.5em;
+  }
+
+  .inline {
+    width: auto !important;
+  }
+
+  .highlight,
+  .code {
+    border-radius: 3px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    overflow-x: auto;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--visited-color);
+  }
+
+</style>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/bundle.min.css">
+</head>
+
+<body>
+  <header>    <nav class="site-nav">
+        <div class="nav-links">
+            <a href="/">Home</a>
+            
+                <a href="/projects/">Projects</a>
+            
+                <a href="/publications/">Publications</a>
+            
+                <a href="/posts/">Blog</a>
+            
+                <a href="/about/">About</a>
+            
+        </div>
+        <div class="social-links">
+            <a href="https://github.com/davidschulte" aria-label="GitHub">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+            </a>
+            <a href="https://linkedin.com/in/davidsiriusschulte" aria-label="LinkedIn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            </a>
+        </div>
+    </nav>
+</header>
+  <main>
+
+<content>
+  <p><a href="../index.html" class="logo">Project</a></p>
+<ul>
+<li><a href="../index.html">Portfolio</a></li>
+<li><a href="../aboutme.html">About me</a></li>
+</ul>
+<!-- -->
+<ul>
+<li><a href="https://github.com/davidschulte"
+class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+<li><a href="https://linkedin.com/in/davidsiriusschulte"
+class="icon brands fa-linkedin"><span class="label">Linkedin</span></a></li>
+</ul>
+<p><span class="date">September 2019</span></p>
+<h1 id="reinforcement-learning-for-3-player-chinese-checkers">Reinforcement Learning for 3-player Chinese Checkers</h1>
+<p>Training an AI agent to play 3-player Chinese Checkers using reinforcement learning techniques.</p>
+<ul>
+<li><a href="https://github.com/davidschulte/alpha-thesis"
+class="icon brands alt fa-github"><span class="label">GitHub</span>   
+Code</a></li>
+<li><a
+href="Reinforcement%20Learning%20for%203-Player%20Chinese%20Checkers.pdf"
+class="icon alt fa-file-pdf"><span class="label">Document</span> 
+Thesis</a></li>
+</ul>
+<!-- <p align="center"><img src="images/alphathesis.png"/></p> -->
+<p align="center">
+  <img src="images/alphathesis.png" width=600/>
+</p>
+<h2 id="introduction">Introduction</h2>
+<h3 id="motivation">Motivation</h3>
+<p>Like for many aspiring Machine Learning enthusiasts, the development of
+AlphaZero could be described as the one event that made me sure, this is
+the right field for me. I was curious how a program can learn such
+sophisticated tactics in several domains just by playing against itself.
+I researched the design of its algorithm and was fascinated by it, I
+decided to dedicate my Bachelor&rsquo;s thesis to experimenting with it.<br>
+The program is designed for learning a strategy for two-player zero-sum
+games. But what would happen, if we break this assumption?</p>
+<h3 id="the-game">The game</h3>
+<p>As application, I chose a game I know since my childhood: the
+multiplayer board game Sternhalma (engl. Chinese Checkers). The goal of
+each player is to maneuver their figures from their designated starting
+zone across the board into their end zone before the others manage to do
+so. Players take turns and can try to advance their pieces but also
+block those of their opponents. The tactical core of the game is its
+jumping role which enables long sequences of movements across the board.</p>
+<h2 id="how-it-works">How it works</h2>
+<h3 id="monte-carlo-tree-search-and-neural-net">Monte-Carlo tree search and Neural Net</h3>
+<p>AlphaZero is the successor of AlphaGo and AlphaGo Zero, all developed by
+the research company Deep Mind. The program trains an agent that can
+surpass previous human as well as algorithmic agents without any prior
+knowledge about its domains, except for their rules. The domain that was
+used for its showcase is the board game Go.</p>
+<p>The core of AlphaZero is the combination of a Convolutional Neural
+Network and a game tree which is traversed using a Monte-Carlo tree
+search. The game tree of complex games like Go grows so quickly that
+even algorithmically it becomes unfeasible to simulate all possible
+positions after even a few turns from the current game state. But why
+check every possible combination of plays when it is obvious that some
+of them are just bad? If we only knew which branches of the tree are
+even worth looking into. That is where Deep Learning comes into play.
+Given a game state, a neural network predicts how likely each player is
+to win, and which branches of the tree are worth looking into. This is
+incorporated in a Monte-Carlo tree search, which enables the program to
+navigate deeper into the game tree and find long-term strategies.</p>
+<p>If you are interested in finding out more about the concept, visit the
+<a href="https://www.deepmind.com/blog/alphazero-shedding-new-light-on-chess-shogi-and-go">official page by
+Deepmind</a>.<br>
+Another excellent resource is <a href="https://web.stanford.edu/~surag/posts/alphazero.html">this explanation by Surag
+Nair</a>. The
+corresponding Github repository of a simplified version of AlphaZero was
+used as a basis for my project.</p>
+<h3 id="self-play">Self-Play</h3>
+<p>The agent&rsquo;s training is carried out through self-play. We let the
+current version play against identical duplicates of itself. This
+results in played games, in which some moves lead to a better position
+while some moves lead to a loss. We let the agents play a fixed number
+of games and zip each played move together with the score it resulted in
+in the end and feed this as training data into the neural network. Thus,
+the network learns to favor moves that lead to a victory. After training
+a new version of the agent, we let it play against the current version
+and if it outperforms the status quo, it will be the new standard.</p>
+<p align="center"><img src="images/flowchart.png"/></p>
+<h2 id="results">Results</h2>
+<h3 id="metrics">Metrics</h3>
+<p>One of the metrics used to evaluate the agent is letting it play against
+a greedy agent. A greedy agent makes one of the moves that advance his
+pieces forward the most but does not plan ahead. Since we are evaluating
+in a 3-player game, we display both scenarios: 2 Alphas vs. 1 Greedy
+Agent and 1 Alpha vs. 2 Greedy Agents.</p>
+<p align="center"><img src="images/mcts_vs_greedy.png"/></p>
+<h3 id="tactics">Tactics</h3>
+<p><span class="image right"><img style="float:right" src="images/block2.png" width="262" height="300" /></span>
+The two main components of the game are blocking your opponents and
+using pieces on the board as a hopping ladder to race one own&rsquo;s pieces
+into the end zone quicker. Since the board is relatively small, the
+agents try to block their opponents during the middle game and then try
+to race their pieces into the end zone at the last minute. Agents also
+consider forced moves of their opponents and plan accordingly.<br>
+It is also important to keep in mind that even though the board has
+rotational symmetry, each player has a slightly different strategy, as
+the order of moves is important.</p>
+<h2 id="difficulties">Difficulties</h2>
+<h3 id="game-loops">Game Loops</h3>
+<p>A game loop is a sequence of moves by players that ends in the same game
+state it started in. Board games that are played competitively usually
+have rules that prevent these loops. For example, even in the game of
+chess where one could imagine such a sequence, the <a href="https://en.wikipedia.org/wiki/Fifty-move_rule">Fifty-move
+rule</a> prevents game loops
+and endless play.</p>
+<p>Sternhalma traditionally does not have rules to prevent game loops. This
+is especially problematic because a loop in the game destroys the
+one-directional structure of its game tree, through which we have to
+navigate. To fix this problem, I added such a rule to the game. However,
+the agents sometimes also found a workaround around that and exploited
+quasi-loops. Sequences that are not identical but lead to the same
+result. I added a second rule that terminates the game after a specified
+number of turns. In the graphic below, you can observe how the yellow
+agent tries to exploit a quasi-loop. Green has already won first place
+and Red only needs to bring one more figure into its end zone. Since
+Green realizes that it will lose the game, it decides to block Red in
+its end zone and drag the game on hopelessly instead of giving up and
+losing the game.</p>
+<p align="center"><img src="images/loop.png"/></p>
+<h3 id="exploration-vs-exploitation">Exploration vs. Exploitation</h3>
+<p>Another difficulty is the right parameter that balances Exploration and
+Exploitation. This is an important tradeoff when learning a new task. In
+our case exploration means trying out new tactics that do not seem
+promising at first glance in the hope of finding a hidden ingenious
+move. Exploitation corresponds to a focus on moves that look promising
+and predicting which of them will have been the best many moves later in
+the game. In our game tree, those concepts are analogous to
+breadth-first and depth-first search. Our Monte-Carlo tree search
+contains a parameter that controls the balancing of both concepts.
+Finding the optimal value for this parameter is not trivial and greatly
+depends on the nature of the game. In this project, I experimented with
+different values, but it is difficult to determine its optimum</p>
+<h2 id="learnings-and-outlook">Learnings and Outlook</h2>
+<p>At the time I was a total beginner in Python and the field of AI.
+Therefore, this turned out to be a very challenging project.
+Nonetheless, it was a success resulting in a strong agent after 20
+episodes of training. The bachelor&rsquo;s thesis was well received and was
+graded with a 1.0 (A+). It contains more details and explanations about
+the project. You can read it <a href="documents/Thesis.pdf">here</a>.<br>
+Looking back now at it, I see a lot of things I would do differently
+now. This mainly concerns the implementation and structure of the code.
+On the other hand, one can see this as a measure of how much I learnt
+since.<br>
+The project also contains an implementation, in which the user can play
+against one or several trained agents. In the future, I would like to
+find a way to host this game online, as it can be a lot more impressive
+to lose against the program than seeing its performance on charts.</p>
+<h3 id="email">Email</h3>
+<p><a href="mailto:davidsiriusschulte@gmail.com">davidsiriusschulte@gmail.com</a></p>
+<h3 id="social">Social</h3>
+<ul>
+<li>
+<p><a href="https://github.com/davidschulte"
+class="icon brands alt fa-github"><span
+class="label">GitHub</span>/davidschulte</a></p>
+</li>
+<li>
+<p><a href="https://linkedin.com/in/davidsiriusschulte"
+class="icon brands fa-linkedin"><span
+class="label">GitHub</span>/davidsiriusschulte</a></p>
+</li>
+<li>
+<p>Design: <a href="https://html5up.net">HTML5 UP</a></p>
+</li>
+</ul>
+
+</content>
+
+
+
+<p>
+  
+</p>
+
+  </main>
+  <footer><footer>
+    <p>&copy; 2026 David Schulte</p>
+</footer>
+</footer>
+
+  
+</body>
+
+</html>

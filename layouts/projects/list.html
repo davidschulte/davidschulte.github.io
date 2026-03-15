@@ -1,0 +1,28 @@
+{{ define "main" }}
+<main>
+    <section>
+        <h1>Projects</h1>
+        <p>Here are some of the projects I've worked on:</p>
+        
+        <ul class="blog-posts">
+            {{ range where site.RegularPages "Section" "projects" }}
+            <li>
+                <span>
+                    <i>
+                        <time datetime='{{ .Date.Format "2006-01-02" }}'>
+                            {{ .Date.Format "Jan 2, 2006" }}
+                        </time>
+                    </i>
+                </span>
+                <div>
+                    <a href="{{ .Permalink }}"><strong>{{ .Title }}</strong></a>
+                    {{ with .Description }}
+                    <p>{{ . }}</p>
+                    {{ end }}
+                </div>
+            </li>
+            {{ end }}
+        </ul>
+    </section>
+</main>
+{{ end }}

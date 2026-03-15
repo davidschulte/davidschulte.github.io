@@ -1,0 +1,53 @@
+{{ define "main" }}
+<main>
+    <article>
+        <header>
+            <h1>{{ .Title }}</h1>
+            {{ with .Date }}
+            <p><time datetime='{{ .Format "2006-01-02" }}'>{{ .Format "January 2, 2006" }}</time></p>
+            {{ end }}
+        </header>
+
+        {{ with .Description }}
+        <p class="publication-description">{{ . }}</p>
+        {{ end }}
+
+        {{ with .Params.publication }}
+        <p><strong>Venue:</strong> {{ . }}</p>
+        {{ end }}
+
+        {{ with .Params.authors }}
+        <p><strong>Authors:</strong> {{ . }}</p>
+        {{ end }}
+
+        <div class="publication-links">
+            {{ with .Params.url_pdf }}
+            <a href="{{ . }}" class="button">PDF</a>
+            {{ end }}
+            {{ with .Params.url_publication }}
+            <a href="{{ . }}" class="button">Publication</a>
+            {{ end }}
+            {{ with .Params.url_arxiv }}
+            <a href="{{ . }}" class="button">arXiv</a>
+            {{ end }}
+            {{ with .Params.url_code }}
+            <a href="{{ . }}" class="button">Code</a>
+            {{ end }}
+        </div>
+
+        {{ if .Content }}
+        <section class="abstract">
+            <h2>Abstract</h2>
+            {{ .Content }}
+        </section>
+        {{ end }}
+
+        {{ with .Params.citation }}
+        <details class="citation-box">
+            <summary><strong>Cite</strong></summary>
+            <pre><code>{{ . }}</code></pre>
+        </details>
+        {{ end }}
+    </article>
+</main>
+{{ end }}

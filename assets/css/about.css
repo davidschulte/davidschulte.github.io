@@ -1,0 +1,10 @@
+
+.profile-circle {
+  width: 200px !important;
+  height: 200px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  display: block !important;
+  margin: 20px auto !important;
+  border: 3px solid #ebbcba !important; 
+}

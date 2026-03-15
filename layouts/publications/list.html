@@ -1,0 +1,32 @@
+{{ define "main" }}
+<main>
+    <section>
+        <h1>Publications</h1>
+        <p>Selected publications and presentations:</p>
+        
+        <ul class="blog-posts">
+            {{ range where site.RegularPages "Section" "publications" }}
+            <li>
+                <span>
+                    <i>
+                        <time datetime='{{ .Date.Format "2006-01-02" }}'>
+                            {{ .Date.Format "Jan 2, 2006" }}
+                        </time>
+                    </i>
+                </span>
+                <div>
+                    <a href="{{ .Permalink }}"><strong>{{ .Title }}</strong></a>
+                    {{ with .Params.authors }}
+                    <p class="home-list-authors">{{ . }}</p>
+                    {{ end }}
+                    {{ with .Description }}
+                    <p>{{ . }}</p>
+                    {{ end }}
+                    <p><em>{{ .Params.publication }}</em></p>
+                </div>
+            </li>
+            {{ end }}
+        </ul>
+    </section>
+</main>
+{{ end }}
