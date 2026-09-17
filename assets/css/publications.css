@@ -62,7 +62,7 @@
 .abstract {
     margin-top: 2rem;
     padding-top: 1rem;
-    border-top: 1px solid var(--text-color);
+    border-top: 1px solid var(--visited-color);
 }
 
 .abstract h2 {
