@@ -3,6 +3,7 @@ title: "Monitoring of the Cryptocurrency Transaction Graph"
 date: 2026-02-08
 draft: false
 description: "Analyzing the Bitcoin transaction graph to understand user behavior and detect patterns."
+url_code: "https://github.com/davidschulte/blockchain-statistics"
 ---
 ## Motivation
 

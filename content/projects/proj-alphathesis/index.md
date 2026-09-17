@@ -3,6 +3,8 @@ title: "Reinforcement Learning for 3-player Chinese Checkers"
 date: 2026-02-08
 draft: false
 description: "Training an AI agent to play 3-player Chinese Checkers using reinforcement learning techniques."
+url_pdf: "https://github.com/davidschulte/alpha-thesis"
+url_code: "Reinforcement%20Learning%20for%203-Player%20Chinese%20Checkers.pdf"
 ---
 
 ## Introduction

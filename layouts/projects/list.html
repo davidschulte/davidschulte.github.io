@@ -7,13 +7,6 @@
         <ul class="blog-posts">
             {{ range where site.RegularPages "Section" "projects" }}
             <li>
-                <span>
-                    <i>
-                        <time datetime='{{ .Date.Format "2006-01-02" }}'>
-                            {{ .Date.Format "Jan 2, 2006" }}
-                        </time>
-                    </i>
-                </span>
                 <div>
                     <a href="{{ .Permalink }}"><strong>{{ .Title }}</strong></a>
                     {{ with .Description }}

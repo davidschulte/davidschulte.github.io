@@ -3,6 +3,7 @@ title: "Customer return predictions"
 date: 2026-02-08
 draft: false
 description: "Given the order of a customer in an online shop, can we predict which items will be returned later?"
+url_code: "https://github.com/davidschulte/bads2021"
 ---
 
 ## Motivation

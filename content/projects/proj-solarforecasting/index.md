@@ -3,6 +3,8 @@ title: "Solar Forecasting"
 date: 2022-03-01
 draft: false
 description: "Analyzing and forecasting daily solar power generation in Germany using time series models."
+url_pdf: "Forecasting%20of%20Solar%20Power%20Generation.pdf"
+url_code: "https://github.com/davidschulte/solar-forecasting"
 ---
 ## Motivation
 

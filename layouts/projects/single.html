@@ -1,0 +1,35 @@
+{{ define "main" }}
+<main>
+    <article>
+        <header>
+            <h1>{{ .Title }}</h1>
+        </header>
+
+        {{ with .Description }}
+        <p class="publication-description">{{ . }}</p>
+        {{ end }}
+
+        <div class="publication-links">
+            {{ with .Params.url_pdf }}
+            <a href="{{ . }}" class="button">PDF</a>
+            {{ end }}
+            {{ with .Params.url_code }}
+            <a href="{{ . }}" class="button">Code</a>
+            {{ end }}
+        </div>
+
+        {{ if .Content }}
+        <section class="abstract">
+            {{ .Content }}
+        </section>
+        {{ end }}
+
+        {{ with .Params.citation }}
+        <details class="citation-box">
+            <summary><strong>Cite</strong></summary>
+            <pre><code>{{ . }}</code></pre>
+        </details>
+        {{ end }}
+    </article>
+</main>
+{{ end }}
