@@ -4,30 +4,6 @@ date: 2026-02-08
 draft: false
 description: "Given the order of a customer in an online shop, can we predict which items will be returned later?"
 ---
-<a href="../index.html" class="logo">Project</a>
-
-- [Portfolio](../index.html)
-- [About me](../aboutme.html)
-
-<!-- -->
-
-- <a href="https://github.com/davidschulte"
-  class="icon brands fa-github"><span class="label">GitHub</span></a>
-- <a href="https://linkedin.com/in/davidsiriusschulte"
-  class="icon brands fa-linkedin"><span class="label">Linkedin</span></a>
-
-<span class="date">February 2021</span>
-
-# Customer return predictions
-
-Given the order of a customer in an online shop, can we predict which
-items will be returned later?
-
-- <a href="https://github.com/davidschulte/bads2021"
-  class="icon brands alt fa-github"><span class="label">GitHub</span>   
-  Code</a>
-
-<!-- ![](images/packagereturns.jpg) -->
 
 ## Motivation
 
@@ -77,18 +53,3 @@ how categories like color and size, whose naming and interpretation can
 be subjective, are difficult to process in a model. Summing it up in one
 sentence: Understand your data and what it presents, before you even
 think about applying a model to it.
-
-### Email
-
-<davidsiriusschulte@gmail.com>
-
-### Social
-
-- <a href="https://github.com/davidschulte"
-  class="icon brands alt fa-github"><span
-  class="label">GitHub</span>/davidschulte</a>
-- <a href="https://linkedin.com/in/davidsiriusschulte"
-  class="icon brands fa-linkedin"><span
-  class="label">GitHub</span>/davidsiriusschulte</a>
-
-- Design: [HTML5 UP](https://html5up.net)

@@ -4,19 +4,6 @@ date: 2022-03-01
 draft: false
 description: "Analyzing and forecasting daily solar power generation in Germany using time series models."
 ---
-
-# German Solar Power Forecasting
-
-Analyzing and forecasting daily solar power generation in Germany using time series models.
-
-<!-- - <a href="https://github.com/davidschulte/solar-forecasting" -->
-<!--   class="icon brands alt fa-github"><span class="label">GitHub</span>    -->
-<!--   Code</a> -->
-<!-- - <a href="Forecasting%20of%20Solar%20Power%20Generation.pdf" -->
-<!--   class="icon alt fa-file-pdf"><span class="label">Document</span>  Course -->
-<!--   Paper</a> -->
-
-
 ## Motivation
 
 Solar energy is one of the fundaments of our transition toward green

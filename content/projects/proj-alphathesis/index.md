@@ -4,37 +4,6 @@ date: 2026-02-08
 draft: false
 description: "Training an AI agent to play 3-player Chinese Checkers using reinforcement learning techniques."
 ---
-<a href="../index.html" class="logo">Project</a>
-
-- [Portfolio](../index.html)
-- [About me](../aboutme.html)
-
-<!-- -->
-
-- <a href="https://github.com/davidschulte"
-  class="icon brands fa-github"><span class="label">GitHub</span></a>
-- <a href="https://linkedin.com/in/davidsiriusschulte"
-  class="icon brands fa-linkedin"><span class="label">Linkedin</span></a>
-
-<span class="date">September 2019</span>
-
-# Reinforcement Learning for 3-player Chinese Checkers
-
-Training an AI agent to play 3-player Chinese Checkers using reinforcement learning techniques.
-
-- <a href="https://github.com/davidschulte/alpha-thesis"
-  class="icon brands alt fa-github"><span class="label">GitHub</span>   
-  Code</a>
-- <a
-  href="Reinforcement%20Learning%20for%203-Player%20Chinese%20Checkers.pdf"
-  class="icon alt fa-file-pdf"><span class="label">Document</span> 
-  Thesis</a>
-
-<!-- <p align="center"><img src="images/alphathesis.png"/></p> -->
-
-<p align="center">
-  <img src="images/alphathesis.png" width=600/>
-</p>
 
 ## Introduction
 
@@ -51,6 +20,9 @@ games. But what would happen, if we break this assumption?
 
 ### The game
 
+<p align="center">
+  <img src="images/alphathesis.png" width=600/>
+</p>
 As application, I chose a game I know since my childhood: the
 multiplayer board game Sternhalma (engl. Chinese Checkers). The goal of
 each player is to maneuver their figures from their designated starting
@@ -188,18 +160,3 @@ The project also contains an implementation, in which the user can play
 against one or several trained agents. In the future, I would like to
 find a way to host this game online, as it can be a lot more impressive
 to lose against the program than seeing its performance on charts.
-
-### Email
-
-<davidsiriusschulte@gmail.com>
-
-### Social
-
-- <a href="https://github.com/davidschulte"
-  class="icon brands alt fa-github"><span
-  class="label">GitHub</span>/davidschulte</a>
-- <a href="https://linkedin.com/in/davidsiriusschulte"
-  class="icon brands fa-linkedin"><span
-  class="label">GitHub</span>/davidsiriusschulte</a>
-
-- Design: [HTML5 UP](https://html5up.net)

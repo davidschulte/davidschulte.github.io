@@ -1,33 +1,9 @@
 ---
-title: "Monitoring Bitcoin"
+title: "Monitoring of the Cryptocurrency Transaction Graph"
 date: 2026-02-08
 draft: false
 description: "Analyzing the Bitcoin transaction graph to understand user behavior and detect patterns."
 ---
-<a href="../index.html" class="logo">Project</a>
-
-- [Portfolio](../index.html)
-- [About me](../aboutme.html)
-
-<!-- -->
-
-- <a href="https://github.com/davidschulte"
-  class="icon brands fa-github"><span class="label">GitHub</span></a>
-- <a href="https://linkedin.com/in/davidsiriusschulte"
-  class="icon brands fa-linkedin"><span class="label">Linkedin</span></a>
-
-<span class="date">March 2022</span>
-
-# Monitoring of the Cryptocurrency Transaction Graph
-
-Analyzing the Bitcoin transaction graph to understand user behavior and detect patterns.
-
-- <a href="https://github.com/davidschulte/blockchain-statistics"
-  class="icon brands alt fa-github"><span class="label">GitHub</span>   
-  Code</a>
-
-<!-- ![](images/cryptotransaction.webp) -->
-
 ## Motivation
 
 In recent years, cryptocurrencies made their way into the mainstream.
@@ -238,18 +214,3 @@ in the past.
   characterizing payments among men with no names. In Proceedings of the
   2013 conference on Internet measurement conference (pp.
   127-140).](https://dl.acm.org/doi/abs/10.1145/2504730.2504747)
-
-### Email
-
-<davidsiriusschulte@gmail.com>
-
-### Social
-
-- <a href="https://github.com/davidschulte"
-  class="icon brands alt fa-github"><span
-  class="label">GitHub</span>/davidschulte</a>
-- <a href="https://linkedin.com/in/davidsiriusschulte"
-  class="icon brands fa-linkedin"><span
-  class="label">GitHub</span>/davidsiriusschulte</a>
-
-- Design: [HTML5 UP](https://html5up.net)
