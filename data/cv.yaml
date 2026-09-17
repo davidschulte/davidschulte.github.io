@@ -1,0 +1,93 @@
+personal:
+  name: "David Schulte"
+  title: "PhD Student in Machine Learning"
+
+education:
+  - institution: "Humboldt University of Berlin"
+    degree: "PhD in Machine Learning"
+    location: "Berlin, Germany"
+    start: "2026-08"
+    end: "present"
+  - institution: "Humboldt University of Berlin"
+    degree: "M.Sc. Statistics"
+    location: "Berlin, Germany"
+    start: "2020-10"
+    end: "2024-04"
+  - institution: "University of Cologne"
+    degree: "B.Sc. Mathematics"
+    location: "Cologne, Germany"
+    start: "2014-10"
+    end: "2019-09"
+  - institution: "Waseda University"
+    degree: "Semester Abroad in Computer Science"
+    location: "Tokyo, Japan"
+    start: "2018-04"
+    end: "2018-08"
+
+work:
+  - company: "Meltwater"
+    role: "Machine Learning Engineer"
+    location: "Berlin, Germany"
+    start: "2025-09"
+    end: "2026-07"
+    bullets:
+      - text: "Built machine learning systems for Natural Language Processing"
+        sub:
+          - "Conceptualized efficient solutions for high-volume text classification"
+          - "Curated and augmenting training data"
+          - "Deployed models in production and monitored them"
+      - text: "Maintained services for generative language models"
+  - company: "Vaayu"
+    role: "Data Scientist"
+    location: "Berlin, Germany"
+    start: "2022-09"
+    end: "2025-08"
+    bullets:
+      - text: "Owned an NLP model that predicts ~1M product taxonomies per day"
+        sub:
+          - "Improved the architecture of the model for efficient hierarchical classification"
+          - "Formulated a loss function to align model behavior and measure performance"
+          - "Devised a routine for data collection to speed up training iterations"
+          - Maintained the production service to guarantee efficiency and accuracy
+      - text: "Conducted large-scale analysis of retail shipping behavior and trends"
+        sub:
+          - "Built data pipelines for data aggregation and analyis"
+          - "Conducted analysis of shipping behavior and communicated it to the CTO and clients"
+          - "Built dashboards for interactive data exploration"
+          - "Simulated the impact of reduction measures on logistics carbon emissions using a self-devised sampling strategy"
+      - text: "Built a multi-agent system to analyze semi-structured customer data"
+      - text: "Consulted the CTO, the Head of Data, and clients about statistics-/ML-related topics"
+  - company: "Jobufo"
+    role: "Data Scientist (Working Student)"
+    location: "Berlin, Germany"
+    start: "2022-03"
+    end: "2022-08"
+    bullets:
+      - text: "Developed a sequence labeling model for segmenting job advertisements"
+      - text: "Used unsupervised clustering of webpages to facilitate market research"
+
+skills:
+  - category: "Concepts"
+    items:
+      - Python
+      - SQL
+      - Machine Learning
+      - NLP
+      - Statistics
+      - Model Deployment
+      - Data Analysis
+  - category: "Technologies"
+    items:
+      - Python
+      - PyTorch
+      - SQL
+      - Docker
+      - Kubernetes
+      - Terraform
+      - Google Cloud Platform
+      - AWS
+  - category: "Languages"
+    items:
+      - English (Fluent)
+      - German (Native)
+      - Japanese (Intermediate / JLPT N2)

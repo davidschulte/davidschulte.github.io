@@ -4,6 +4,7 @@
 {{ $about := resources.Get "css/about.css" }}
 {{ $dataframe := resources.Get "css/dataframe.css" }}
 {{ $publications := resources.Get "css/publications.css" }}
+{{ $cv := resources.Get "css/cv.css" }}
 
-{{ $bundle := slice $main $notebook $highlight $about $dataframe $publications | resources.Concat "css/bundle.css" | resources.Minify }}
+{{ $bundle := slice $main $notebook $highlight $about $dataframe $publications $cv | resources.Concat "css/bundle.css" | resources.Minify }}
 <link rel="stylesheet" href="{{ $bundle.RelPermalink }}">

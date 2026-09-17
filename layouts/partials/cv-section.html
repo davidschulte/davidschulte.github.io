@@ -1,0 +1,118 @@
+<div class="cv-section">
+    <div class="cv-download">
+        <a href="/resume.pdf" class="cv-button" target="_blank">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Download CV (PDF)
+        </a>
+    </div>
+
+    {{ with .Site.Data.cv.personal }}
+    <div class="cv-header">
+        <h1>{{ .name }}</h1>
+        <p class="cv-title">{{ .title }}</p>
+    </div>
+    {{ end }}
+
+    {{ with .Site.Data.cv.education }}
+    <div class="cv-block">
+        <h2>Education</h2>
+        {{ range . }}
+        <div class="cv-entry">
+            <div class="cv-entry-header">
+                <div class="cv-entry-left">
+                    <span class="cv-degree">{{ .degree }}</span>
+                    <span class="cv-institution">{{ .institution }}</span>
+                </div>
+                <div class="cv-entry-right">
+                    <span class="cv-location">{{ .location }}</span>
+                    <span class="cv-dates">{{ .start }} – {{ .end }}</span>
+                </div>
+            </div>
+        </div>
+        {{ end }}
+    </div>
+    {{ end }}
+
+    {{ with .Site.Data.cv.work }}
+    <div class="cv-block">
+        <h2>Work Experience</h2>
+        {{ range . }}
+        <div class="cv-entry">
+            <div class="cv-entry-header">
+                <div class="cv-entry-left">
+                    <span class="cv-role">{{ .role }}</span>
+                    <span class="cv-company">{{ .company }}</span>
+                </div>
+                <div class="cv-entry-right">
+                    <span class="cv-location">{{ .location }}</span>
+                    <span class="cv-dates">{{ .start }} – {{ .end }}</span>
+                </div>
+            </div>
+            {{ with .bullets }}
+            <ul class="cv-bullets">
+                {{ range . }}
+                <li>
+                    {{ .text }}
+                    {{ with .sub }}
+                    <ul class="cv-sub-bullets">
+                        {{ range . }}
+                        <li>{{ . }}</li>
+                        {{ end }}
+                    </ul>
+                    {{ end }}
+                </li>
+                {{ end }}
+            </ul>
+            {{ end }}
+        </div>
+        {{ end }}
+    </div>
+    {{ end }}
+
+    {{ with .Site.Data.cv.skills }}
+    <div class="cv-block">
+        <h2>Skills</h2>
+        {{ range . }}
+        <div class="cv-skill-category">
+            <span class="cv-skill-label">{{ .category }}:</span>
+            <span class="cv-skill-items">{{ delimit .items ", " }}</span>
+        </div>
+        {{ end }}
+    </div>
+    {{ end }}
+
+    <div class="cv-block">
+        <h2>Publications</h2>
+        {{ $publications := where site.RegularPages "Section" "publications" }}
+        {{ if $publications }}
+        <ul class="cv-publications-list">
+            {{ range $publications }}
+            <li>
+                <a href="{{ .Permalink }}">{{ .Title }}</a>
+                {{ with .Params.publication }}
+                <span class="cv-publication-venue"> — {{ . }}</span>
+                {{ end }}
+            </li>
+            {{ end }}
+        </ul>
+        {{ end }}
+    </div>
+
+    <div class="cv-block">
+        <h2>Projects</h2>
+        {{ $projects := where site.RegularPages "Section" "projects" }}
+        {{ if $projects }}
+        <ul class="cv-projects-list">
+            {{ range $projects }}
+            <li>
+                <a href="{{ .Permalink }}"><strong>{{ .Title }}</strong></a>
+                {{ with .Description }}
+                <p class="cv-project-desc">{{ . }}</p>
+                {{ end }}
+            </li>
+            {{ end }}
+        </ul>
+        {{ end }}
+        <p><a href="/projects/">View all projects →</a></p>
+    </div>
+</div>
