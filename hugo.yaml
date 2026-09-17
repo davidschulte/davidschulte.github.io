@@ -10,6 +10,8 @@ params:
   mainSections:
     - posts
 
+  favicon: "/favicon.svg"
+
 menu:
   main:
     - name: "Publications"
