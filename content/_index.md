@@ -16,7 +16,7 @@ Prior to my PhD program, I studied Mathematics and Statistics. I worked in the i
 
 I am an active member of [BLISS e.V.](https://bliss.berlin/), where I work in the Speaker Curation team.
 
-For more information, see my [publications](#publications), or read more [about me](#about).
+For more information, see my [publications](publications), or read more [about me](about).
 
 Please feel free to reach out to me for questions, collaborations or just to say hi!
 
