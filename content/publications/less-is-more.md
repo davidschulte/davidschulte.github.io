@@ -7,7 +7,7 @@ publication: "EMNLP 2024"
 authors: "David Schulte, Felix Hamborg, Alan Akbik"
 url_pdf: "https://aclanthology.org/2024.emnlp-main.529.pdf"
 url_publication: "https://aclanthology.org/2024.emnlp-main.529/"
-url_arxiv: "https://arxiv.org/abs/2410.03202"
+url_arxiv: "https://arxiv.org/abs/2410.15148"
 url_code: "https://github.com/davidschulte/hf-dataset-selector"
 citation: >
  @inproceedings{schulte-etal-2024-less,
