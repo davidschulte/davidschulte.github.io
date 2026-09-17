@@ -38,8 +38,9 @@ footer {
     flex-wrap: nowrap !important;
     width: 100% !important;
     padding: 1rem 0;
-    border-bottom: 1px solid var(--rp-overlay);
+    border-bottom: 1px solid var(--visited-color);
     margin-bottom: 3rem;
+    font-size: 1.2rem;
 }
 
 .site-nav .nav-links,
